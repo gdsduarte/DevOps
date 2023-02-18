@@ -3,5 +3,5 @@ DevOps Assignment
 
 ## Login Credentials
 
-- email: `teste@teste.com`
+- email: `test@test.com`
 - password: `123456`
