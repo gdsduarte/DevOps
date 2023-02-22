@@ -45,9 +45,13 @@
         }
 
         .calendar-table {
+           
+            background-color: white;
+            margin-top: -5px;
             border-collapse: collapse;
             width: 1000px;
-            height: 100%;
+            height: 650px;
+            
         }
 
         .calendar-table th {
@@ -59,6 +63,7 @@
 
         .calendar-table td {
             border: 1px solid #ddd;
+            border-radius: 10px;
             padding: 8px;
             text-align: center;
         }
@@ -77,24 +82,48 @@
             display: flex;
             margin-top: 100px;
         }
+        table {
+
+            
+            border-radius: 25px;
+
+        }
 
         .side_bar {
-            background-color: #283C90;
+            margin-top: -2px;
+            margin-right: -20px;
+            background-color: #E6F3FF;
             width: 300px;
-            height: 600px;
+            height: 640px;
             padding: 20px;
-            margin-top: 10px;
             float: left;
             display: flex;
             margin-left: 150px;
             color: white;
             font-size: 30px;
+            border-radius: 15px;
+            border-style: solid;
+            
         }
+        .ins-border {
 
+            background-color: white;
+            width: 320px;
+            height: 640px;
+ 
+        }
         .main_content {
-            margin: 20px;
+            margin: 20px ;
 
         }
+        .back_main_content {
+            width: 1040px;
+            height: 680px;
+            border-collapse: collapse;
+            background-color: #283C90;
+            border-radius: 15px;
+        }   
+        
     </style>
 </head>
 
@@ -106,15 +135,16 @@
     </header>
 
     <section class="middle">
+    
         <div class="side_bar">
+        <div class="ins-border">
             <p>side bar</p>
-
         </div>
-
+        </div>
+        <div class="back_main_content">
         <div class="main_content">
-
             <table class="calendar-table">
-                <thead>
+                <thead style="color=">
                     <tr>
                         <th>Sun</th>
                         <th>Mon</th>
@@ -174,6 +204,8 @@
                 </tbody>
             </table>
         </div>
+        </div>
+    </div>
 
 
     </section>
