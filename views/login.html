@@ -6,35 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="/DevOps/assets/css/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
 </head>
 
 <body>
-    <main>
-        <section class="container">
-            <div class="col-1">
-                <img src="/assets/img/logo.jpg">
-            </div>
+<div class="container">
+  <div class="col-1">
+      <div class="media">
+      <img src="/assets/img/logo.jpg">
+      </div>
+      <div class="footer">
+        <div class="footer-icons">
+          <a href="https://www.instagram.com/dorsetcollegedublin/"><i class="fa fa-instagram"></i></a>
+          <a href="https://www.facebook.com/dorsetcollege/"><i class="fa fa-facebook"></i></a>
+          <a href="https://www.linkedin.com/school/dorset-college-dublin/"><i class="fa fa-linkedin"></i></a>
+          <a href="https://www.youtube.com/channel/UCxLJ1AKUMuPvyhTWMH05q2Q"><i class="fa fa-youtube"></i></a>
+        </div>
+      </div>
+  </div> 
+    
+  <div class="col-2">
+  <div class="signin">Sign In</div>
 
-            <div class="col-2">
-                <div class="signin">Sign In</div>
-
-                <form id="login">
-                    <div class="email">
-                        <input type="email" name="Email Adress" placeholder="Email Adress" required>
-                    </div>
-                    <div class="password">
-                        <input type="password" name="Password" placeholder="Password" required>
-                    </div>
-                    <div class="login">
-                        <button class="btn">Login</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-    </main>
+  <div class="email">
+  <input type="Email Adress" name="Email Adress" placeholder="Email Adress" required>
+  </div>
+  <div class="password">
+  <input type="Password" name="Password" placeholder="Password" required>
+  </div>
+  <div class="login">
+  <button class="btn">Login</button>
+  </div>
+  </div>
+</div>
 
     <!-- Firebase SDK script -->
     <script>
