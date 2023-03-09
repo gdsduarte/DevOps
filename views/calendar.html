@@ -1,217 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .header {
-            background-color: #283C90;
-            padding: 20px;
-            text-align: center;
-            top: 0;
-            left: 0;
-            position: fixed;
-            right: 0;
-            height: 50px;
-        }
-
-        .header img {
-            position: static;
-            display: block;
-            max-height: 140%;
-            max-width: 140%;
-            margin-left: 70px;
-            margin-right: auto;
-            border-radius: 50%;
-            margin-top: -12px;
-        }
-
-        /* ----------------- calendar configuration-----*/
-
-        .calendar {
-            font-family: Arial, sans-serif;
-            display: inline-block;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        .calendar-header {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .calendar-table {
-           
-            background-color: white;
-            margin-top: -5px;
-            border-collapse: collapse;
-            width: 1000px;
-            height: 650px;
-            
-        }
-
-        .calendar-table th {
-            background-color: #f2f2f2;
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .calendar-table td {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .calendar-table .current-month {
-            background-color: #ddd;
-        }
-
-        .calendar-table .today {
-            background-color: #ffc;
-            font-weight: bold;
-        }
-
-        /* -------------end of calendar configuration----*/
-        .middle {
-            display: flex;
-            margin-top: 100px;
-        }
-        table {
-
-            
-            border-radius: 25px;
-
-        }
-
-        .side_bar {
-            margin-top: -2px;
-            margin-right: -20px;
-            background-color: #E6F3FF;
-            width: 300px;
-            height: 640px;
-            padding: 20px;
-            float: left;
-            display: flex;
-            margin-left: 150px;
-            color: white;
-            font-size: 30px;
-            border-radius: 15px;
-            border-style: solid;
-            
-        }
-        .ins-border {
-
-            background-color: white;
-            width: 320px;
-            height: 640px;
- 
-        }
-        .main_content {
-            margin: 20px ;
-
-        }
-        .back_main_content {
-            width: 1040px;
-            height: 680px;
-            border-collapse: collapse;
-            background-color: #283C90;
-            border-radius: 15px;
-        }   
-        
-    </style>
+    <link rel="stylesheet" href="/assets/css/calendar.css">
 </head>
 
-<body>
-    <header>
-        <div class="header">
-            <img src="/assets/img/logo_calendar.png" alt="">
-        </div>
-    </header>
-
-    <section class="middle">
-    
-        <div class="side_bar">
-        <div class="ins-border">
-            <p>side bar</p>
-        </div>
-        </div>
-        <div class="back_main_content">
-        <div class="main_content">
-            <table class="calendar-table">
-                <thead style="color=">
-                    <tr>
-                        <th>Sun</th>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>1</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>11</td>
-                        <td>12</td>
-                        <td>13</td>
-                        <td>14</td>
-                        <td>15</td>
-                        <td>16</td>
-                    </tr>
-                    <tr>
-                        <td>17</td>
-                        <td>18</td>
-                        <td>19</td>
-                        <td>20</td>
-                        <td>21</td>
-                        <td>22</td>
-                        <td>23</td>
-                    </tr>
-                    <tr>
-                        <td>24</td>
-                        <td>25</td>
-                        <td>26</td>
-                        <td>27</td>
-                        <td>28</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        </div>
+<header>
+    <div class="header">
+        <img src="/assets/img/logo_calendar.png" alt="">
     </div>
+</header>
+
+<body>
+
+    <section>
+
+    <div class="column left">
+        <h1 style="text-align: center; color: grey;">9, February, 2023</h2>
+            <div class="column left2">
+                <h4 style="color: grey; text-align: center;">Wednesday</h4>
+                <ul>
+                    <li>
+                        <h5>Object Oriented Programming</h5>
+                    </li>
+                    <li>
+                        <h5>DataBase</h5>
+                    </li>
+                    <li>
+                        <h5>MobileApps</h5>
+                    </li>
+                    <li>
+                        <h5>FrontEnd</h5>
+                    </li>
+                    <li>
+                        <h5>DevOps</h5>
+                    </li>
+                </ul>
+            </div>
+                <div class="column left3">
+                    <h4 style="color: grey; text-align: center;">Notes</h4>
+                    <ul>
+
+                        <li>
+                            <h5>After Class Meeting</h5>
+                        </li>
+                        <li>
+                            <h5>After Class Meeting</h5>
+                        </li>
+
+                    </ul>
+                 </div>
+    </div>
+        
+    <div class="column middle">
+        <div class="button-bar-mid">
+            
+        </div>
+            <div class="calendar-mid">
+                
+            </div>
+        </div>
+    <div class="column right">
+
+        <h4 style="color: grey;">Tags</h2>
+        <ul>
+
+            <li style="color: red;"><h5>DevOps</h5></li>
+            <li style="color: rgb(13, 16, 212);"><h5>FrontEnd</h5></li>
+            <li style="color: rgb(9, 170, 62);"><h5>MobileApp</h5></li>
+            <li style="color: rgb(255, 174, 0);"><h5>DataBase</h5></li>
 
 
-    </section>
+        </ul>
+
+    </div>
     
-    <a href="/sessionLogout">Log out</a>
+    </section>
 </body>
+
+<footer>
+
+
+</footer>
 
 </html>
 
