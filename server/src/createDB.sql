@@ -1,8 +1,8 @@
 -- Active: 1669938776289@@127.0.0.1@3306
 
-CREATE DATABASE scheduler_events;
+CREATE DATABASE DevOps_Calendar;
 
-USE scheduler_events;
+USE DevOps_Calendar;
 
 DROP TABLE IF EXISTS events;
 

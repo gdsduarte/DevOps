@@ -10,7 +10,7 @@ exports.createConnection = (autoConnect = true) => new Promise((resolve, reject)
             host: 'localhost',
             user: 'root',
             password: 'gds437',
-            database: 'scheduler_events'
+            database: 'DevOps_Calendar'
         });
 
         if (autoConnect) {

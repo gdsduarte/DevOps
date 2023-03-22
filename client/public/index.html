@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Dorset schedule app" />
+    <meta
+      name="Dorset College"
+      content="Assessment calendar for Dorset College"
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -17,100 +19,22 @@
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
-
       Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <link rel="stylesheet" href="./assets/css/calendar.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
     <title>Dorset College</title>
-</head>
-
-<header>
-    <div class="header">
-        <img src="/assets/img/logo_calendar.png" alt="">
-    </div>
-</header>
-
-<body>
+  </head>
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <section>
-
-        <div class="column left">
-            <h1 style="text-align: center; color: grey;">9, February, 2023</h2>
-                <div class="column left2">
-                    <h4 style="color: grey; text-align: center;">Wednesday</h4>
-                    <ul>
-                        <li>
-                            <h5>Object Oriented Programming</h5>
-                        </li>
-                        <li>
-                            <h5>DataBase</h5>
-                        </li>
-                        <li>
-                            <h5>MobileApps</h5>
-                        </li>
-                        <li>
-                            <h5>FrontEnd</h5>
-                        </li>
-                        <li>
-                            <h5>DevOps</h5>
-                        </li>
-                    </ul>
-                </div>
-                <div class="column left3">
-                    <h4 style="color: grey; text-align: center;">Notes</h4>
-                    <ul>
-
-                        <li>
-                            <h5>After Class Meeting</h5>
-                        </li>
-                        <li>
-                            <h5>After Class Meeting</h5>
-                        </li>
-
-                    </ul>
-                </div>
-        </div>
-
-        <div class="column middle">
-            <div class="button-bar-mid">
-
-            </div>
-
-            <div id="root" class="calendar-mid"></div>
-
-        </div>
-        <div class="column right">
-
-            <h4 style="color: grey;">Tags</h2>
-                <ul>
-
-                    <li style="color: red;">
-                        <h5>DevOps</h5>
-                    </li>
-                    <li style="color: rgb(13, 16, 212);">
-                        <h5>FrontEnd</h5>
-                    </li>
-                    <li style="color: rgb(9, 170, 62);">
-                        <h5>MobileApp</h5>
-                    </li>
-                    <li style="color: rgb(255, 174, 0);">
-                        <h5>DataBase</h5>
-                    </li>
-                </ul>
-
-        </div>
-        <div class="column right2">
-                
-
-        </div>
-
-    </section>
-    
-</body>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>

@@ -12,15 +12,15 @@ async function getAllEvents(req, res) {
 }
 
 async function createEvent(req, res) {
-  const { title, start, end } = req.body;
+  const { title, subject, dateStart, dateEnd, description, backgroundColor } = req.body;
 
   // Validate input
-  const { error } = validateEvent({ title, start, end });
+  const { error } = validateEvent({ title, subject, dateStart, dateEnd, description, backgroundColor });
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const result = await query('INSERT INTO events (title, start, end) VALUES (?, ?, ?)', [title, start, end]);
-    res.json({ id: result.insertId, title, start, end });
+    const result = await query('INSERT INTO events (title, subject, dateStart, dateEnd, description, backgroundColor) VALUES (?, ?, ?, ?, ?, ?)', [title, subject, dateStart, dateEnd, description, backgroundColor]);
+    res.json({ id: result.insertId, title, subject, dateStart, dateEnd, description, backgroundColor });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
@@ -29,16 +29,16 @@ async function createEvent(req, res) {
 
 async function updateEvent(req, res) {
   const { id } = req.params;
-  const { title, start, end } = req.body;
+  const { title, subject, dateStart, dateEnd, description, backgroundColor } = req.body;
 
   // Validate input
-  const { error } = validateEvent({ title, start, end });
+  const { error } = validateEvent({ title, subject, dateStart, dateEnd, description, backgroundColor });
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const result = await query('UPDATE events SET title = ?, start = ?, end = ? WHERE id = ?', [title, start, end, id]);
+    const result = await query('UPDATE events SET title = ?, subject = ?, dateStart = ?, dateEnd = ?, description = ?, backgroundColor = ? WHERE id = ?', [title, subject, dateStart, dateEnd, description, backgroundColor, id]);
     if (result.affectedRows === 0) return res.status(404).send('Event not found');
-    res.json({ id, title, start, end });
+    res.json({ id, title, subject, dateStart, dateEnd, description, backgroundColor });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
