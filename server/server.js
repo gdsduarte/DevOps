@@ -38,11 +38,13 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+app.listen(port, () => {
+    console.log(`App is listening on port: ${port}`);
+});
+
 // Launch server
 createConnection()
     .then(() => {
-        app.listen(port, () => {
-            console.log(`App is listening on port: ${port}`);
-        });
+        
     })
     .catch(console.log)
