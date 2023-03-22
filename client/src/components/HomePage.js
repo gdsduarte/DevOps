@@ -1,4 +1,3 @@
-
 import React from "react";
 import "../assets/css/calendar.css";
 import Social from "./SocialMedia";

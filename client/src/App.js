@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Home from './components/HomePage';
 import Login from './components/LoginPage';
 import firebase from './services/firebase';
-import './App.css';
 
 function App() {
     const [user, setUser] = useState(null);
