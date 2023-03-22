@@ -1,0 +1,226 @@
+header {
+    height: 60px;
+    margin-top: -10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border-bottom: solid 1px #8f8f8f;
+}
+
+/* --------logo left-------- */
+.logo {
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    margin-top: -8px;
+}
+
+/* --------end logo left-------- */
+
+/* ------- profile icon -------- */
+.profile_icon {
+    float: right;
+    margin-top: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.profile_icon img {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin-top: -4px;
+}
+
+.icon {
+    font-size: 30px;
+    color: #000000;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    float: right;
+}
+
+/* -----end profile icon ------- */
+
+/* --------calendar-------- */
+section {
+    border-color: blue;
+    border-style: dashed;
+    margin-top: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    background-color: #f2f2f2;
+    height: auto;
+}
+
+/* --------FOOTER-------- */
+footer {
+    border-color: green;
+    border-style: dashed;
+    height: 60px;
+    margin-top: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    background-color: #283C90;
+    position: relative;
+    bottom: 0;
+}
+
+.rows {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 10px;
+    margin-right: 10px;
+    justify-content: space-evenly;
+}
+
+/* ----- column left side list ------ */
+
+footer a {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+footer ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    background-color: #283C90;
+    display: flex;
+    flex-direction: row;
+}
+
+footer li {
+    float: left;
+    margin-top: 20px;
+    padding-left: 40px;
+}
+
+.column_left {
+    float: left;
+    width: 33%;
+    padding: 5px;
+}
+
+/* ----- column middle footer and list ------ */
+
+.column_mid {
+    width: 33%;
+    padding: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: -190px;
+}
+
+/* ----- column right footer ------ */
+
+.column_right {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ---------- MAIN CONTENT [RIGHT SIDE] ----------- */
+
+ul li {
+
+    padding: 5px;
+    width: fit-content;
+    border-radius: 4px;
+}
+
+li::before {
+
+    font-size: 500px;
+
+}
+
+.container_right {
+    position: relative;
+
+    border: 5px solid #BFE0FF;
+    border-radius: 15px;
+    width: 258px;
+    height: auto;
+    float: right;
+
+}
+
+.title {
+
+    text-align: center;
+
+}
+
+.container_right1 {
+
+    border: 5px solid #BFE0FF;
+    border-radius: 15px;
+    height: auto;
+
+}
+
+.container_right2 {
+
+    border-top: 5px solid #BFE0FF;
+    border-radius: 15px;
+    height: auto;
+
+}
+
+/* ---------- MAIN CONTENT [LEFT SIDE] ----------- */
+
+.column.left2 {
+
+
+    width: 250px;
+    height: auto;
+    margin-left: -13px;
+    z-index: 0;
+    float: left;
+
+}
+
+.column.left3 {
+
+    width: 250px;
+    height: auto;
+    margin-left: -13px;
+    margin-bottom: -13px;
+    margin-top: -18px;
+    z-index: 1;
+    background-color: white;
+
+}
+
+.main {
+    border-color: yellow;
+    border-style: dashed;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    height: auto;
+    justify-content: space-between;
+}
+
+.mid {
+    border-color: red;
+    border-style: dashed;
+    width: 100%;
+    height: auto;
+}
+
