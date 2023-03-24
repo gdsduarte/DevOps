@@ -2,7 +2,7 @@ import React from 'react';
 
 const SocialMediaIcons = () => {
   return (
-    <div>
+    <div className='social'>
       <a href="#">
         <img src={require("../assets/img/logo_calendar.png")} alt="instagram" />
       </a>
