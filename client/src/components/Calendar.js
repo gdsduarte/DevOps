@@ -1,124 +1,71 @@
-import { useState } from "react";
-import { formatDate } from '@fullcalendar/core'
+import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from '@fullcalendar/daygrid';
+import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import EventModal from "./EventModal";
-import DetailsModal from "./DetailsModal";
-import { INITIAL_EVENTS, handleEventClick, createEventId } from '../services/eventUtils'
+import { createEventId, INITIAL_EVENTS } from "../services/eventUtils";
 
-const colors = {
-  UX_UI: "#E6F3FF",
-  Operating_Systems: "#FFCDFD",
-  DevOps: "#FFEBEB",
-  MobileApps: "#FFF5E8",
-  Networking: "#FDFFAB",
-  OOP: "#E6F8EB",
-  Notes: "#E8E8E8",
-};
-
-const state = {
-  weekendsVisible: true,
-  currentEvents: []
-};
-
-
-export function renderSidebar() {
-  return (
-    <div className='calendar-sidebar'>
-      <div className='calendar-sidebar-section'>
-        <h2>All Events ({state.currentEvents.length})</h2>
-        <ul>
-          {state.currentEvents.map(renderSidebarEvent)}
-        </ul>
-      </div>
-    </div>
-  )
-}
-
-function renderEventContent(eventInfo) {
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  )
-}
-
-function renderSidebarEvent(event) {
-  return (
-    <li key={event.id}>
-      <b>{formatDate(event.start, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <i>{event.title}</i>
-    </li>
-  )
-}
-
-const Calendar = () => {
-  const [events, setEvents] = useState([]);
-
-  const handleEventClick = (clickInfo) => {
-    // handle event click
-    if (window.confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
-  };
+function Calendar() {
+  const [eventList, setEventList] = useState(INITIAL_EVENTS);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleDateSelect = (selectInfo) => {
-    // handle date selection
-    let title = prompt('Please enter a new title for your event');
-    let calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
+    setModalOpen(true);
   };
 
   const handleEventAdd = (event) => {
     const newEvent = {
+      id: createEventId(),
       title: event.title,
-      subject: event.subject,
       start: event.start,
       end: event.end,
-      description: event.description,
+      allDay: event.allDay,
       color: colors[event.subject],
     };
-    setEvents((events) => [...events, newEvent]);
+    setEventList((eventList) => [...eventList, newEvent]);
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const colors = {
+    UXUI: "#E6F3FF",
+    OperatingSystems: '#FFCDFD',
+    DevOps: '#FFEBEB',
+    MobileApps: '#FFF5E8',
+    Networking: '#FDFFAB',
+    OOP: '#E6F8EB',
+    Notes: '#E8E8E8'
+  };
+  
   return (
-    <FullCalendar
-      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-      headerToolbar={{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      }}
-      initialView="dayGridMonth"
-      editable={true}
-      selectable={true}
-      selectMirror={true}
-      dayMaxEvents={true}
-      weekends={state.weekendsVisible}
-      events={events}
-      eventClick={handleEventClick}
-      dateSelect={handleDateSelect}
-      eventAdd={handleEventAdd}
-      eventContent={renderEventContent}
-      contentHeight={570}
-      initialEvents={INITIAL_EVENTS}
-      weekNumbers={true}
-    />
+    <>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        initialView="dayGridMonth"
+        editable={true}
+        selectable={true}
+        selectMirror={true}
+        dayMaxEvents={true}
+        events={eventList}
+        select={handleDateSelect}
+        contentHeight={570}
+        weekNumbers={true}
+      />
+      <EventModal
+        isOpen={modalOpen}
+        closeModal={closeModal}
+        onSave={handleEventAdd}
+      />
+    </>
   );
-};
+}
 
 export default Calendar;

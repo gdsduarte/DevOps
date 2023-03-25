@@ -3,6 +3,9 @@ import Modal from "react-modal";
 import axios from "../services/http-common";
 
 const customModalStyles = {
+  overlay: {
+    zIndex: 1000,
+  },
   content: {
     top: "50%",
     left: "50%",
@@ -10,6 +13,7 @@ const customModalStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    backgroundColor: "blue",
   },
 };
 

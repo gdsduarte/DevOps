@@ -19,7 +19,7 @@ const Event = db.define('events',{
     description:{
         type: DataTypes.STRING
     },
-    pbackgroundColor:{
+    color_id:{
         type: DataTypes.STRING
     },
 },{

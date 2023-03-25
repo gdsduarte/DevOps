@@ -1,9 +1,25 @@
-import React from "react";
 import "../assets/css/calendar.css";
 import Social from "./SocialMedia";
 import { logout } from "../services/firebase";
 import Calendar from "./Calendar";
-import { renderSidebar } from './Calendar';
+import Sidebar from "./Sidebar";
+import React, { useState } from "react";
+
+const events = [
+  {
+    id: 1,
+    title: "Event 1",
+    start: "2023-03-30T10:00:00",
+    end: "2023-03-30T12:00:00",
+  },
+  {
+    id: 2,
+    title: "Event 2",
+    start: "2023-04-01T14:00:00",
+    end: "2023-04-01T16:00:00",
+  },
+];
+
 
 function Header() {
   return (
@@ -24,7 +40,16 @@ function Main() {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString('en-US', options);
   const [dayOfWeek, monthAndDay, year] = formattedDate.split(', ');
-  const currentEvents = [];
+  const [currentEvents, setCurrentEvents] = useState([]);
+
+  const renderSidebarEvent = (event) => {
+    return (
+      <li key={event.id}>
+        {event.title}
+      </li>
+    );
+  };
+
 
   return (
     <main>
@@ -38,50 +63,8 @@ function Main() {
               <div>{monthAndDay}</div>
               <div>{year}</div>
             </div> */}
-          <div className="column-events">
-            {renderSidebar(currentEvents)}
-            {/* <h4 style={{ color: "grey", textAlign: "left" }}>WEDNESDAY 11/02/2023</h4>
-              <ul>
-                <li style={{ color: "green" }}>
-                  <h5>8:30 - Finish</h5>
-                  <h5>Develop program interface</h5>
-                </li>
-              </ul>
-              <h4 style={{ color: "grey", textAlign: "left" }}>THURSDAY 12/02/2023</h4>
-              <ul>
-                <li style={{ color: "maroon" }}>
-                  <h5>8:30 - 9:00</h5>
-                  <h5>Edit file</h5>
-                </li>
-              </ul>
-              <h4 style={{ color: "grey", textAlign: "left" }}>MONDAY 13/02/2023</h4>
-              <ul>
-                <li style={{ color: "orange" }}>
-                  <h5>8:30 - 11:30</h5>
-                  <h5>Creating interface design</h5>
-                </li>
-              </ul>
-              <h4 style={{ color: "grey", textAlign: "left" }}>MONDAY 14/02/2023</h4>
-              <ul>
-                <li style={{ color: "aqua" }}>
-                  <h5>8:30 - Finish</h5>
-                  <h5>Code hard</h5>
-                </li>
-              </ul>
-              <h4 style={{ color: "grey", textAlign: "left" }}>WEDNESDAY 15/02/2023</h4>
-              <ul>
-                <li style={{ color: "red" }}>
-                  <h5>12:30 - 16:00</h5>
-                  <h5>Work on project</h5>
-                </li>
-              </ul>
-              <h4 style={{ color: "grey", textAlign: "left" }}>MONDAY 16/02/2023</h4>
-              <ul>
-                <li style={{ color: "blue" }}>
-                  <h5>8:30 - Finish</h5>
-                  <h5>Finish design</h5>
-                </li>
-              </ul> */}
+          <div id="EventList" className="column-events">
+            <Sidebar currentEvents={events} renderSidebarEvent={renderSidebarEvent} />
           </div>
           <div className="notes-title">
             <h1>NOTES</h1>
@@ -100,14 +83,14 @@ function Main() {
         <div className="center">
           <div className="button-bar-mid"></div>
           <div className="calendar-mid">
-            <Calendar />
+            <Calendar events={events} />
           </div>
         </div>
         <div className="right-side">
           <div className="module-title">
             <h1>Modules</h1>
           </div>
-          <div className="column-module">
+          <div id="SubjectList" className="column-module">
             <ul>
               <li style={{ color: '#0084FF', backgroundColor: '#E6F3FF' }}>UX/UI</li>
               <br />
@@ -127,7 +110,7 @@ function Main() {
           <div className="deadline-title">
             <h1>Deadline</h1>
           </div>
-          <div className="column-deadline">
+          <div id="DeadlineList"  className="column-deadline">
             <ul>
               <li style={{ color: '#0084FF', backgroundColor: '#E6F3FF' }}>3 Days Left</li>
               <br />
