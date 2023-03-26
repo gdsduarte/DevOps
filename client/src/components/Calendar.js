@@ -7,8 +7,7 @@ import { fetchEvents } from "../services/eventService";
 import EventModal from "./EventModal";
 import { getEventColors } from "../services/eventUtils";
 
-const Calendar = () => {
-  const [events, setEvents] = useState([]);
+const Calendar = ({ onEventsChange, getEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarRef, setCalendarRef] = useState(null);
@@ -26,9 +25,9 @@ const Calendar = () => {
           end: new Date(event.end),
         };
       });
-      setEvents(updatedEvents);
+      onEventsChange(updatedEvents);
     };
-  
+
     loadEvents();
   }, []);
 
@@ -38,12 +37,20 @@ const Calendar = () => {
   };
 
   const handleEventClick = (info) => {
-    setSelectedEvent(info.event);
+    setSelectedEvent({
+      id: info.event.id,
+      title: info.event.title,
+      subject: info.event._def.extendedProps.subject,
+      start: info.event.start,
+      end: info.event.end,
+      description: info.event._def.extendedProps.description,
+    });
     setIsModalOpen(true);
   };
 
   const handleEventAdd = (newEvent) => {
     calendarRef.getApi().addEvent(newEvent);
+    onEventsChange([...getEvents, newEvent]);
   };
 
   const handleEventUpdate = (updatedEvent) => {
@@ -55,6 +62,10 @@ const Calendar = () => {
       eventApi.setExtendedProp('description', updatedEvent.description);
       eventApi.setProp('backgroundColor', updatedEvent.backgroundColor);
     }
+    const updatedEvents = getEvents.map((event) => {
+      return event.id === updatedEvent.id ? updatedEvent : event;
+    });
+    onEventsChange(updatedEvents);
   };
 
   const handleEventDelete = (deletedEventId) => {
@@ -62,6 +73,8 @@ const Calendar = () => {
     if (eventApi) {
       eventApi.remove();
     }
+    const remainingEvents = getEvents.filter((event) => event.id !== deletedEventId);
+    onEventsChange(remainingEvents);
   };
 
   const handleSelectOverlap = (selectionInfo) => {
@@ -83,7 +96,7 @@ const Calendar = () => {
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
         initialView="dayGridMonth"
-        events={events}
+        events={getEvents}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
         editable={true}

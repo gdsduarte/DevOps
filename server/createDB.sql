@@ -9,11 +9,11 @@ DROP TABLE IF EXISTS events;
 CREATE TABLE events (
     id INT AUTO_INCREMENT NOT NULL,
     title VARCHAR(50) NOT NULL,
-    subject VARCHAR(50),
+    subject VARCHAR(50) NOT NULL,
     start DATETIME NOT NULL,
     end DATETIME NOT NULL,
     description TEXT,
-    backgroundColor VARCHAR(7),
+    backgroundColor VARCHAR(15),
     createdAt DATETIME,
     updatedAt DATETIME,
     PRIMARY KEY (id)

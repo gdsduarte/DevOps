@@ -97,7 +97,15 @@ section {
     border-radius: 15px 0;
     border-width: 5px;
     border-color: #BFE0FF;
-  }
+}
+
+.events-title {
+    width: 100%;
+    margin-top: auto;
+    text-align: center;
+    text-transform: uppercase;
+    
+}
 
 .notes-title {
     width: 100%;

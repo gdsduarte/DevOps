@@ -5,21 +5,15 @@ import Calendar from "./Calendar";
 import Sidebar from "./Sidebar";
 import React, { useState } from "react";
 
-const events = [
-  {
-    id: 1,
-    title: "Event 1",
-    start: "2023-03-30T10:00:00",
-    end: "2023-03-30T12:00:00",
-  },
-  {
-    id: 2,
-    title: "Event 2",
-    start: "2023-04-01T14:00:00",
-    end: "2023-04-01T16:00:00",
-  },
+const subjects = [
+  { name: "UX/UI", style: { color: "#0084FF", backgroundColor: "#E6F3FF" } },
+  { name: "Operating Systems", style: { color: "#FF00F5", backgroundColor: "#FFCDFD" } },
+  { name: "DevOps", style: { color: "#E92C2C", backgroundColor: "#FFEBEB" } },
+  { name: "MobileApps", style: { color: "#FF9F2D", backgroundColor: "#FFF5E8" } },
+  { name: "Networking", style: { color: "#a1a30d", backgroundColor: "#FDFFAB" } },
+  { name: "OOP", style: { color: "#00BA34", backgroundColor: "#E6F8EB" } },
+  { name: "Notes", style: { color: "#848383", backgroundColor: "#E8E8E8" } },
 ];
-
 
 function Header() {
   return (
@@ -50,7 +44,6 @@ function Main() {
     );
   };
 
-
   return (
     <main>
       <section>
@@ -63,11 +56,16 @@ function Main() {
               <div>{monthAndDay}</div>
               <div>{year}</div>
             </div> */}
-          <div id="EventList" className="column-events">
-            <Sidebar currentEvents={events} renderSidebarEvent={renderSidebarEvent} />
+          <div className="column-events">
+            <div className="events-title">
+              <h1>Events</h1>
+            </div>
+            <ul>
+              {currentEvents.map(renderSidebarEvent)}
+            </ul>
           </div>
           <div className="notes-title">
-            <h1>NOTES</h1>
+            <h1>Notes</h1>
           </div>
           <div className="column-notes">
             <ul>
@@ -83,34 +81,27 @@ function Main() {
         <div className="center">
           <div className="button-bar-mid"></div>
           <div className="calendar-mid">
-            <Calendar events={events} />
+            <Calendar onEventsChange={setCurrentEvents} getEvents={currentEvents} />
           </div>
         </div>
         <div className="right-side">
           <div className="module-title">
             <h1>Modules</h1>
           </div>
-          <div id="SubjectList" className="column-module">
+          <div className="column-module">
             <ul>
-              <li style={{ color: '#0084FF', backgroundColor: '#E6F3FF' }}>UX/UI</li>
-              <br />
-              <li style={{ color: '#FF00F5', backgroundColor: '#FFCDFD' }}>Operating Systems</li>
-              <br />
-              <li style={{ color: '#E92C2C', backgroundColor: '#FFEBEB' }}>DevOps</li>
-              <br />
-              <li style={{ color: '#FF9F2D', backgroundColor: '#FFF5E8' }}>MobileApps</li>
-              <br />
-              <li style={{ color: '#a1a30d', backgroundColor: '#FDFFAB' }}>Networking</li>
-              <br />
-              <li style={{ color: '#00BA34', backgroundColor: '#E6F8EB' }}>OOP</li>
-              <br />
-              <li style={{ color: '#848383', backgroundColor: '#E8E8E8' }}>Notes</li>
+              {subjects.map((subject) => (
+                <React.Fragment key={subject.name}>
+                  <li style={subject.style}>{subject.name}</li>
+                  <br />
+                </React.Fragment>
+              ))}
             </ul>
           </div>
           <div className="deadline-title">
             <h1>Deadline</h1>
           </div>
-          <div id="DeadlineList"  className="column-deadline">
+          <div id="DeadlineList" className="column-deadline">
             <ul>
               <li style={{ color: '#0084FF', backgroundColor: '#E6F3FF' }}>3 Days Left</li>
               <br />

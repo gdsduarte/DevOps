@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
 import { getEventColors } from "../services/eventUtils";
@@ -21,11 +21,28 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEventDelete }) => {
-  const [title, setTitle] = useState(event ? event.title : "");
-  const [subject, setSubject] = useState(event ? event.subject : "");
-  const [start, setStart] = useState(event ? event.start : "");
-  const [end, setEnd] = useState(event ? event.end : "");
-  const [description, setDescription] = useState(event ? event.description : "");
+  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (event) {
+      setTitle(event.title);
+      setSubject(event.subject);
+      setStart(new Date(event.start).toISOString().slice(0, -8));
+      setEnd(event.end ? new Date(event.end).toISOString().slice(0, -8) : "");
+      setDescription(event.description);
+    } else {
+      setTitle("");
+      setSubject("");
+      setStart("");
+      setEnd("");
+      setDescription("");
+    }
+  }, [event]);
+
 
   const handleSave = async () => {
     const eventColors = getEventColors(subject);
@@ -76,7 +93,10 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
           onChange={(e) => setTitle(e.target.value)} />
         <br />
         <label>Subject:</label>
-        <select value={subject} onChange={(e) => setSubject(e.target.value)}>
+        <select
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        >
           <option value="">Select a subject</option>
           <option value="UXUI">UX/UI</option>
           <option value="OperatingSystems">Operating Systems</option>
