@@ -1,8 +1,10 @@
 import axios from "axios";
 
-export default axios.create({
-  baseURL: "http://localhost:3001/events/",
+const http = axios.create({
+  baseURL: "http://localhost:5000", // Replace with your server's URL
   headers: {
-    "Content-type": "application/json"
-  }
+    "Content-type": "application/json",
+  },
 });
+
+export default http;

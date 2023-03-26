@@ -10,18 +10,24 @@ const Event = db.define('events',{
     subject:{
         type: DataTypes.STRING
     },
-    dateStart:{
+    start:{
         type: DataTypes.DATE
     },
-    dateEnd:{
+    end:{
         type: DataTypes.DATE
     },
     description:{
         type: DataTypes.STRING
     },
-    color_id:{
+    backgroundColor:{
         type: DataTypes.STRING
     },
+    createdAt:{
+        type: DataTypes.DATE
+    },
+    updatedAt:{
+        type: DataTypes.DATE
+    }
 },{
     freezeTableName: true
 });

@@ -1,119 +1,42 @@
-let eventGuid = 0
-let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+export const getEventColors = (subject) => {
+  const subjectColors = {
+    UXUI: "#E6F3FF",
+    OperatingSystems: "#FFCDFD",
+    DevOps: "#FFEBEB",
+    MobileApps: "#FFF5E8",
+    Networking: "#FDFFAB",
+    OOP: "#E6F8EB",
+    Notes: "#E8E8E8",
+  };
 
-export const INITIAL_EVENTS = [
-    {
-        id: createEventId(),
-        title: 'All-day event',
-        start: todayStr
-    },
-    {
-        id: createEventId(),
-        title: 'Timed event',
-        start: todayStr + 'T12:00:00'
-    }
-]
+  const color = subjectColors[subject] || "#FFFFFF";
+  return {
+    backgroundColor: color,
+    borderColor: color,
+  };
+};
 
-export function createEventId() {
-    return String(eventGuid++)
-}
+/* export const getEventColors = (subject, opacity = 0.5) => {
+  const subjectColors = {
+    UXUI: "rgba(230, 243, 255, OPACITY)",
+    OperatingSystems: "rgba(255, 205, 253, OPACITY)",
+    DevOps: "rgba(255, 235, 235, OPACITY)",
+    MobileApps: "rgba(255, 245, 232, OPACITY)",
+    Networking: "rgba(253, 255, 171, OPACITY)",
+    OOP: "rgba(230, 248, 235, OPACITY)",
+    Notes: "rgba(232, 232, 232, OPACITY)",
+  };
 
-export function handleEventClick(clickInfo) {
-    if (window.confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove();
-    }
-}
+  const colorWithOpacity = (color) => {
+    return color.replace("OPACITY", opacity);
+  };
 
-export function handleEvents(events) {
-    this.setState({
-        currentEvents: events
-    });
-}
+  const color = subjectColors[subject]
+    ? colorWithOpacity(subjectColors[subject])
+    : "rgba(255, 255, 255, OPACITY)".replace("OPACITY", opacity);
 
-export function handleEventChange(changeInfo) {
-    console.log(changeInfo.event);
-    console.log(changeInfo.oldEvent);
-    console.log(changeInfo.revert);
-}
-
-export function handleDateClick(clickInfo) {
-    console.log(clickInfo);
-}
-
-export function handleEventAdd(addInfo) {
-    console.log(addInfo.event);
-}
-
-export function handleEventDelete(deleteInfo) {
-    console.log(deleteInfo.event);
-}
-
-export function handleEventRemove(removeInfo) {
-    console.log(removeInfo.event);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* export function formatEvent(event) {
-    // Format event object for display in the calendar
-    return {
-        id: event.id,
-        title: event.title,
-        start: event.start,
-        end: event.end
-    };
-}
-
-export function createEvent(event) {
-    // Create a new event on the server
-    return fetch('/api/events', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(event)
-    })
-        .then(res => res.json())
-        .then(data => formatEvent(data))
-        .catch(err => console.error(err));
-}
-
-export function updateEvent(event) {
-    // Update an existing event on the server
-    return fetch(`/api/events/${event.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(event)
-    })
-        .then(res => res.json())
-        .then(data => formatEvent(data))
-        .catch(err => console.error(err));
-}
-
-export function deleteEvent(eventId) {
-    // Delete an existing event on the server
-    return fetch(`/api/events/${eventId}`, {
-        method: 'DELETE'
-    })
-        .then(res => {
-            if (res.ok) {
-                return eventId;
-            } else {
-                console.error(`Failed to delete event with ID ${eventId}`);
-            }
-        })
-        .catch(err => console.error(err));
-}
- */
+  return {
+    backgroundColor: color,
+    borderColor: color,
+  };
+}; */

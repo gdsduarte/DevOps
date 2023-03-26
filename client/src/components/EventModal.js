@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import axios from "../services/http-common";
+import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
+import { getEventColors } from "../services/eventUtils";
 
-const customModalStyles = {
-  overlay: {
-    zIndex: 1000,
-  },
+const customStyles = {
   content: {
     top: "50%",
     left: "50%",
@@ -13,80 +11,103 @@ const customModalStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "blue",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
   },
 };
 
-const EventModal = ({ isOpen, closeModal, onSave }) => {
-  const [title, setTitle] = useState("");
-  const [subject, setSubject] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [description, setDescription] = useState("");
+Modal.setAppElement("#root");
 
-  const handleSave = () => {
-    const event = {
+const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEventDelete }) => {
+  const [title, setTitle] = useState(event ? event.title : "");
+  const [subject, setSubject] = useState(event ? event.subject : "");
+  const [start, setStart] = useState(event ? event.start : "");
+  const [end, setEnd] = useState(event ? event.end : "");
+  const [description, setDescription] = useState(event ? event.description : "");
+
+  const handleSave = async () => {
+    const eventColors = getEventColors(subject);
+
+    const newEvent = {
       title,
       subject,
-      start,
-      end,
+      start: new Date(start),
+      end: new Date(end),
       description,
+      ...eventColors,
+      textColor: "black",
     };
 
-    axios.post("events", event)
-    .then((response) => {
-      console.log("Event saved successfully", response.data);
-      onSave(event);
-      closeModal();
-    })
-    .catch((error) => {
-      console.error("Error saving event", error);
-    });
+    if (event) {
+      await updateEvent(event.id, newEvent);
+      onEventUpdate({ ...newEvent, id: event.id });
+    } else {
+      const createdEvent = await createEvent(newEvent);
+      onEventAdd({ ...newEvent, id: createdEvent.id });
+    }
+    onClose();
+  };
+
+  const handleDelete = async () => {
+    if (event) {
+      await deleteEvent(event.id);
+      onEventDelete(event.id);
+    }
+    onClose();
+  };
+
+  const handleCancel = () => {
+    onClose();
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={closeModal}
-      style={customModalStyles}
-      ariaHideApp={false}
-    >
-      <h2>Add Event</h2>
+      onRequestClose={onClose}
+      style={customStyles}
+      shouldCloseOnOverlayClick={false}>
+      <h2>{event ? "Edit Event" : "Add Event"}</h2>
       <form>
-        <label htmlFor="title">Title</label>
-        <input type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+        <label>Title:</label>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)} />
         <br />
-
-        <label htmlFor="subject">Subject</label>
-        <select id="subject" onChange={(e) => setSubject(e.target.value)}>
-          <option value="Math">Math</option>
-          <option value="Science">Science</option>
-          <option value="English">English</option>
+        <label>Subject:</label>
+        <select value={subject} onChange={(e) => setSubject(e.target.value)}>
+          <option value="">Select a subject</option>
+          <option value="UXUI">UX/UI</option>
+          <option value="OperatingSystems">Operating Systems</option>
+          <option value="DevOps">DevOps</option>
+          <option value="MobileApps">Mobile Apps</option>
+          <option value="Networking">Networking</option>
+          <option value="OOP">OOP</option>
+          <option value="Notes">Notes</option>
         </select>
         <br />
-
-        <label htmlFor="start">Start Date</label>
-        <input type="date" id="start" onChange={(e) => setStart(e.target.value)} />
         <br />
-
-        <label htmlFor="end">End Date</label>
-        <input type="date" id="end" onChange={(e) => setEnd(e.target.value)} />
+        <label>Start Time:</label>
+        <input type="datetime-local"
+          value={start}
+          onChange={(e) => setStart(e.target.value)} />
         <br />
-
-        <label htmlFor="description">Description</label>
+        <label>End Time:</label>
+        <input type="datetime-local"
+          value={end}
+          onChange={(e) => setEnd(e.target.value)} />
+        <br />
+        <label>Description:</label>
         <textarea
-          id="description"
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
-        <br />
-
-        <button type="button" onClick={handleSave}>
-          Save
-        </button>
-        <button type="button" onClick={closeModal}>
-          Cancel
-        </button>
+          value={description}
+          onChange={(e) => setDescription(e.target.value)} />
       </form>
+      <br />
+      <br />
+      <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
+      {event && <button onClick={handleDelete}>Delete</button>}
+      <button onClick={handleCancel}>Cancel</button>
     </Modal>
   );
 };
