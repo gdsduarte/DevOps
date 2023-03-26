@@ -2,8 +2,8 @@ import "../assets/css/calendar.css";
 import Social from "./SocialMedia";
 import { logout } from "../services/firebase";
 import Calendar from "./Calendar";
-import Sidebar from "./Sidebar";
 import React, { useState } from "react";
+import Sidebar from "./Utils";
 
 const subjects = [
   { name: "UX/UI", style: { color: "#0084FF", backgroundColor: "#E6F3FF" } },
@@ -36,14 +36,6 @@ function Main() {
   const [dayOfWeek, monthAndDay, year] = formattedDate.split(', ');
   const [currentEvents, setCurrentEvents] = useState([]);
 
-  const renderSidebarEvent = (event) => {
-    return (
-      <li key={event.id}>
-        {event.title}
-      </li>
-    );
-  };
-
   return (
     <main>
       <section>
@@ -51,18 +43,11 @@ function Main() {
           <div className="column-today-date">
             <h1>{formattedDate}</h1>
           </div>
-          {/* <div style={{ textAlign: "center", color: "grey" }} id="eventDayName">
-              <div>{dayOfWeek}</div>
-              <div>{monthAndDay}</div>
-              <div>{year}</div>
-            </div> */}
           <div className="column-events">
             <div className="events-title">
               <h1>Events</h1>
             </div>
-            <ul>
-              {currentEvents.map(renderSidebarEvent)}
-            </ul>
+            <Sidebar events={currentEvents} />
           </div>
           <div className="notes-title">
             <h1>Notes</h1>
