@@ -10,7 +10,7 @@ function Login() {
     <div className="container">
       <div className="col-1">
         <div className="media">
-          <img src="../assets/img/logo.jpg" alt="logo" />
+          <img src={require("../assets/img/logo.jpg")} alt="logo" />
         </div>
         <div className="footer">
           <div className="footer-icons">
