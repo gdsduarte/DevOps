@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
-import { getEventColors } from "../services/eventUtils";
+import { getSubjectStyle } from "../components/CalendarUtils";
 
 const customStyles = {
   content: {
@@ -45,7 +45,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
 
 
   const handleSave = async () => {
-    const eventColors = getEventColors(subject);
+    const eventStyle = getSubjectStyle(subject);
 
     const newEvent = {
       title,
@@ -53,8 +53,9 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       start: new Date(start),
       end: new Date(end),
       description,
-      ...eventColors,
-      textColor: "black",
+      borderColor: eventStyle.backgroundColor,
+      backgroundColor: eventStyle.backgroundColor,
+      textColor: eventStyle.color,
     };
 
     if (event) {
@@ -92,21 +93,24 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
           value={title}
           onChange={(e) => setTitle(e.target.value)} />
         <br />
-        <label>Subject:</label>
-        <select
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-        >
-          <option value="">Select a subject</option>
-          <option value="UXUI">UX/UI</option>
-          <option value="OperatingSystems">Operating Systems</option>
-          <option value="DevOps">DevOps</option>
-          <option value="MobileApps">Mobile Apps</option>
-          <option value="Networking">Networking</option>
-          <option value="OOP">OOP</option>
-          <option value="Notes">Notes</option>
-        </select>
-        <br />
+        {!event && (
+          <>
+            <label>Subject:</label>
+            <select
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            >
+              <option value="UX/UI">UX/UI</option>
+              <option value="Operating Systems">Operating Systems</option>
+              <option value="DevOps">DevOps</option>
+              <option value="MobileApps">Mobile Apps</option>
+              <option value="Networking">Networking</option>
+              <option value="OOP">OOP</option>
+              <option value="Notes">Notes</option>
+            </select>
+            <br />
+          </>
+        )}
         <br />
         <label>Start Time:</label>
         <input type="datetime-local"

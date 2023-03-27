@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { fetchEvents } from "../services/eventService";
 import EventModal from "./EventModal";
-import { getEventColors } from "../services/eventUtils";
+import { getSubjectStyle } from "../components/CalendarUtils";
 
 const Calendar = ({ onEventsChange, getEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -16,18 +16,19 @@ const Calendar = ({ onEventsChange, getEvents }) => {
     const loadEvents = async () => {
       const fetchedEvents = await fetchEvents();
       const updatedEvents = fetchedEvents.map((event) => {
-        const eventColors = getEventColors(event.subject);
+        const eventStyle = getSubjectStyle(event.subject);
         return {
           ...event,
-          ...eventColors,
-          textColor: "black",
+          borderColor: eventStyle.backgroundColor,
+          backgroundColor: eventStyle.backgroundColor,
+          textColor: eventStyle.color,
           start: new Date(event.start),
           end: new Date(event.end),
         };
       });
       onEventsChange(updatedEvents);
     };
-
+  
     loadEvents();
   }, []);
 
@@ -86,6 +87,14 @@ const Calendar = ({ onEventsChange, getEvents }) => {
     return true;
   };
 
+  const renderEventContent = (eventInfo) => {
+    return (
+      <div>
+        <div className="event-title">{eventInfo.event.title}</div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <FullCalendar
@@ -108,6 +117,7 @@ const Calendar = ({ onEventsChange, getEvents }) => {
         eventOverlap={false}
         selectOverlap={handleSelectOverlap}
         ref={setCalendarRef}
+        eventContent={renderEventContent}
       />
       <EventModal
         isOpen={isModalOpen}

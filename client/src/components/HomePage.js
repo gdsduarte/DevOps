@@ -3,17 +3,7 @@ import Social from "./SocialMedia";
 import { logout } from "../services/firebase";
 import Calendar from "./Calendar";
 import React, { useState } from "react";
-import Sidebar from "./Utils";
-
-const subjects = [
-  { name: "UX/UI", style: { color: "#0084FF", backgroundColor: "#E6F3FF" } },
-  { name: "Operating Systems", style: { color: "#FF00F5", backgroundColor: "#FFCDFD" } },
-  { name: "DevOps", style: { color: "#E92C2C", backgroundColor: "#FFEBEB" } },
-  { name: "MobileApps", style: { color: "#FF9F2D", backgroundColor: "#FFF5E8" } },
-  { name: "Networking", style: { color: "#a1a30d", backgroundColor: "#FDFFAB" } },
-  { name: "OOP", style: { color: "#00BA34", backgroundColor: "#E6F8EB" } },
-  { name: "Notes", style: { color: "#848383", backgroundColor: "#E8E8E8" } },
-];
+import { Subjects, EventBar, DeadlineBar } from "./CalendarUtils";
 
 function Header() {
   return (
@@ -33,8 +23,8 @@ function Main() {
   const today = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString('en-US', options);
-  const [dayOfWeek, monthAndDay, year] = formattedDate.split(', ');
   const [currentEvents, setCurrentEvents] = useState([]);
+  const [subjectFilter, setSubjectFilter] = useState("All");
 
   return (
     <main>
@@ -47,7 +37,7 @@ function Main() {
             <div className="events-title">
               <h1>Events</h1>
             </div>
-            <Sidebar events={currentEvents} />
+            <EventBar events={currentEvents} />
           </div>
           <div className="notes-title">
             <h1>Notes</h1>
@@ -75,9 +65,14 @@ function Main() {
           </div>
           <div className="column-module">
             <ul>
-              {subjects.map((subject) => (
+              {Subjects.map((subject) => (
                 <React.Fragment key={subject.name}>
-                  <li style={subject.style}>{subject.name}</li>
+                  <li
+                    style={subject.style}
+                    onClick={() => setSubjectFilter(subject.name)}
+                  >
+                    {subject.name}
+                  </li>
                   <br />
                 </React.Fragment>
               ))}
@@ -86,19 +81,9 @@ function Main() {
           <div className="deadline-title">
             <h1>Deadline</h1>
           </div>
-          <div id="DeadlineList" className="column-deadline">
-            <ul>
-              <li style={{ color: '#0084FF', backgroundColor: '#E6F3FF' }}>3 Days Left</li>
-              <br />
-              <li style={{ color: '#FF00F5', backgroundColor: '#FFCDFD' }}>5 Days Left</li>
-              <br />
-              <li style={{ color: '#E92C2C', backgroundColor: '#FFEBEB' }}>1 Day Left</li>
-              <br />
-              <li style={{ color: '#FF9F2D', backgroundColor: '#FFF5E8' }}>6 Days Left</li>
-              <br />
-              <li style={{ color: '#a1a30d', backgroundColor: '#FDFFAB' }}>8 Days Left</li>
-              <br />
-            </ul>
+          <div className="column-deadline">
+            <h3 className="all-filter" onClick={() => setSubjectFilter("All")}>All</h3>
+            <DeadlineBar events={currentEvents} subjectFilter={subjectFilter} />
           </div>
         </div>
       </section>
