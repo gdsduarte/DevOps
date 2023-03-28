@@ -1,35 +1,41 @@
 import { Sequelize } from "sequelize";
-import db from "../config/database.js";
- 
-const { DataTypes } = Sequelize;
- 
-const Event = db.define('events',{
-    title:{
-        type: DataTypes.STRING
+import connectDb from "../config/database.js";
+
+const db = await connectDb();
+const createEventModel = (db) => {
+  const Event = db.define("event", {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    subject:{
-        type: DataTypes.STRING
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
-    start:{
-        type: DataTypes.DATE
+    subject: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
-    end:{
-        type: DataTypes.DATE
+    start: {
+      type: Sequelize.DATE,
+      allowNull: false,
     },
-    description:{
-        type: DataTypes.STRING
+    end: {
+      type: Sequelize.DATE,
+      allowNull: false,
     },
-    backgroundColor:{
-        type: DataTypes.STRING
+    description: {
+      type: Sequelize.TEXT,
     },
-    createdAt:{
-        type: DataTypes.DATE
+    backgroundColor: {
+      type: Sequelize.STRING,
     },
-    updatedAt:{
-        type: DataTypes.DATE
-    }
-},{
-    freezeTableName: true
-});
- 
+  });
+
+  return Event;
+};
+
+const Event = createEventModel(db);
+
 export default Event;

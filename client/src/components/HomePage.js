@@ -2,8 +2,9 @@ import "../assets/css/calendar.css";
 import Social from "./SocialMedia";
 import { logout } from "../services/firebase";
 import Calendar from "./Calendar";
-import React, { useState } from "react";
-import { Subjects, EventBar, DeadlineBar } from "./CalendarUtils";
+import { Subjects, EventBar, DeadlineBar, NotesBar } from "./CalendarUtils";
+import { fetchEvents } from "../services/eventService";
+import React, { useState, useEffect } from "react";
 
 function Header() {
   return (
@@ -26,6 +27,22 @@ function Main() {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState("All");
 
+  useEffect(() => {
+    const loadEvents = async () => {
+      const fetchedEvents = await fetchEvents();
+      const updatedEvents = fetchedEvents.map((event) => {
+        return {
+          ...event,
+          start: new Date(event.start),
+          end: new Date(event.end),
+        };
+      });
+      setCurrentEvents(updatedEvents);
+    };
+
+    loadEvents();
+  }, []);
+
   return (
     <main>
       <section>
@@ -43,20 +60,13 @@ function Main() {
             <h1>Notes</h1>
           </div>
           <div className="column-notes">
-            <ul>
-              <li>
-                <h5>Don't forget to talk with your classmates</h5>
-              </li>
-              <li>
-                <h5>After class happy hour on 4/20</h5>
-              </li>
-            </ul>
+            <NotesBar events={currentEvents} />
           </div>
         </div>
         <div className="center">
           <div className="button-bar-mid"></div>
           <div className="calendar-mid">
-            <Calendar onEventsChange={setCurrentEvents} getEvents={currentEvents} />
+            <Calendar onEventsChange={setCurrentEvents} />
           </div>
         </div>
         <div className="right-side">

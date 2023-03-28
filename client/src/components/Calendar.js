@@ -7,10 +7,11 @@ import { fetchEvents } from "../services/eventService";
 import EventModal from "./EventModal";
 import { getSubjectStyle } from "../components/CalendarUtils";
 
-const Calendar = ({ onEventsChange, getEvents }) => {
+const Calendar = ({ onEventsChange }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarRef, setCalendarRef] = useState(null);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -26,17 +27,44 @@ const Calendar = ({ onEventsChange, getEvents }) => {
           end: new Date(event.end),
         };
       });
-      onEventsChange(updatedEvents);
+      setEvents(updatedEvents);
     };
   
     loadEvents();
   }, []);
 
+  const countOverlappingEvents = (selectedRangeStart, selectedRangeEnd) => {
+    const calendarApi = calendarRef.getApi();
+    const events = calendarApi.getEvents();
+    let overlappingEvents = 0;
+  
+    events.forEach((event) => {
+      if (
+        (selectedRangeStart >= event.start && selectedRangeStart < event.end) ||
+        (selectedRangeEnd > event.start && selectedRangeEnd <= event.end) ||
+        (selectedRangeStart < event.start && selectedRangeEnd > event.end)
+      ) {
+        overlappingEvents++;
+      }
+    });
+  
+    return overlappingEvents;
+  };
+  
   const handleDateClick = (arg) => {
+    const selectedRangeStart = new Date(arg.date);
+    const selectedRangeEnd = new Date(arg.date);
+    selectedRangeEnd.setDate(selectedRangeEnd.getDate() + 1);
+  
+    if (countOverlappingEvents(selectedRangeStart, selectedRangeEnd) >= 2) {
+      alert("You cannot have more than 2 events on the same day.");
+      return;
+    }
+  
     setSelectedEvent(null);
     setIsModalOpen(true);
   };
-
+  
   const handleEventClick = (info) => {
     setSelectedEvent({
       id: info.event.id,
@@ -50,10 +78,17 @@ const Calendar = ({ onEventsChange, getEvents }) => {
   };
 
   const handleEventAdd = (newEvent) => {
-    calendarRef.getApi().addEvent(newEvent);
-    onEventsChange([...getEvents, newEvent]);
+    const updatedEvent = {
+      ...newEvent,
+      borderColor: getSubjectStyle(newEvent.subject).backgroundColor,
+      backgroundColor: getSubjectStyle(newEvent.subject).backgroundColor,
+      textColor: getSubjectStyle(newEvent.subject).color,
+    };
+  
+    calendarRef.getApi().addEvent(updatedEvent);
+    onEventsChange([...events, updatedEvent]);
   };
-
+  
   const handleEventUpdate = (updatedEvent) => {
     const eventApi = calendarRef.getApi().getEventById(updatedEvent.id);
     if (eventApi) {
@@ -61,12 +96,12 @@ const Calendar = ({ onEventsChange, getEvents }) => {
       eventApi.setProp('subject', updatedEvent.subject);
       eventApi.setDates(updatedEvent.start, updatedEvent.end);
       eventApi.setExtendedProp('description', updatedEvent.description);
-      eventApi.setProp('backgroundColor', updatedEvent.backgroundColor);
+      eventApi.setProp('backgroundColor', getSubjectStyle(updatedEvent.subject).backgroundColor);
     }
-    const updatedEvents = getEvents.map((event) => {
+    const updatedEventsList = events.map((event) => {
       return event.id === updatedEvent.id ? updatedEvent : event;
     });
-    onEventsChange(updatedEvents);
+    onEventsChange(updatedEventsList);
   };
 
   const handleEventDelete = (deletedEventId) => {
@@ -74,17 +109,8 @@ const Calendar = ({ onEventsChange, getEvents }) => {
     if (eventApi) {
       eventApi.remove();
     }
-    const remainingEvents = getEvents.filter((event) => event.id !== deletedEventId);
+    const remainingEvents = events.filter((event) => event.id !== deletedEventId);
     onEventsChange(remainingEvents);
-  };
-
-  const handleSelectOverlap = (selectionInfo) => {
-    const overlappingEvents = selectionInfo.overlappingEvents;
-    if (overlappingEvents.length >= 2) {
-      alert("You cannot have more than 2 events on the same day.");
-      return false;
-    }
-    return true;
   };
 
   const renderEventContent = (eventInfo) => {
@@ -105,7 +131,6 @@ const Calendar = ({ onEventsChange, getEvents }) => {
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
         initialView="dayGridMonth"
-        events={getEvents}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
         editable={true}
@@ -115,9 +140,9 @@ const Calendar = ({ onEventsChange, getEvents }) => {
         contentHeight={570}
         weekNumbers={true}
         eventOverlap={false}
-        selectOverlap={handleSelectOverlap}
         ref={setCalendarRef}
         eventContent={renderEventContent}
+        events={events}
       />
       <EventModal
         isOpen={isModalOpen}
@@ -126,6 +151,7 @@ const Calendar = ({ onEventsChange, getEvents }) => {
         onEventAdd={handleEventAdd}
         onEventUpdate={handleEventUpdate}
         onEventDelete={handleEventDelete}
+        events={events}
       />
     </div>
   );

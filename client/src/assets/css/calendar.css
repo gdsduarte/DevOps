@@ -141,11 +141,11 @@ section {
     border-radius: 15px 0;
     border-width: 5px;
     border-color: #BFE0FF;
+    overflow-y: auto;
 }
 
 .notes-title {
     width: 100%;
-    margin-top: auto;
     text-align: center;
     text-transform: uppercase;
     font-size: 12px;
@@ -308,6 +308,100 @@ section {
     border-radius: 3px;
 }
 
+/* ---------- MODAL ----------- */
+
+.custom-modal .input-error,
+.custom-modal input[type="date"].input-error,
+.custom-modal select.input-error {
+  border: 1px solid red;
+}
+
+.custom-modal input {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.custom-modal h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.custom-modal label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.custom-modal input[type="text"],
+.custom-modal textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.custom-modal select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.custom-modal input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.custom-modal button {
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.custom-modal button:hover {
+    background-color: #283C90;
+    color: #fff;
+}
+
+.date-time {
+    display: flex;
+    justify-content: space-between;
+}
+
+.date-time>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.date-time input[type="date"],
+.date-time select {
+    height: fit-content;
+    margin-right: 10px;
+}
+
+.date-time>div>div {
+    display: flex;
+    align-items: center;
+}
 
 /* ------------ FOOTER -------------- */
 
