@@ -5,7 +5,6 @@ body {
     height: 100%;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -59,7 +58,6 @@ body {
 }
 
 .fa {
-    padding: 40px;
     font-size: 30px;
     width: 30px;
     text-align: center;

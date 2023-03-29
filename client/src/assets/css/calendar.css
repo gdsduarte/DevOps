@@ -482,12 +482,18 @@ footer {
 }
 
 .column_mid .social {
+    width: 50%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 50%;
     justify-content: space-evenly;
 }
+
+.column_mid .social a {
+    width: 100%;
+}
+
+
 
 .column_mid .social img {
     display: block;
