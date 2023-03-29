@@ -110,9 +110,9 @@ function Footer() {
     <footer>
       <div className="column_left">
         <ul>
-          <li><a href="#">About us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of use</a></li>
+          <li><a href="#top">About us</a></li>
+          <li><a href="#top">Privacy Policy</a></li>
+          <li><a href="#top">Terms of use</a></li>
         </ul>
       </div>
       <div className="column_mid">
