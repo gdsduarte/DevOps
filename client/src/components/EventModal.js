@@ -74,18 +74,6 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     }
   }, [event]);
 
-  const getSameDateEvent = () => {
-    const eventDate = new Date(startDate);
-    return events.find((e) => {
-      const eDate = new Date(e.start);
-      return (
-        eDate.getDate() === eventDate.getDate() &&
-        eDate.getMonth() === eventDate.getMonth() &&
-        eDate.getFullYear() === eventDate.getFullYear()
-      );
-    });
-  };
-
   const validateInputs = () => {
     let isValid = true;
 
@@ -237,24 +225,21 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          {!event && (
-            <>
-              <label>Subject: </label>
-              <select
-                className={subjectError ? "input-error" : ""}
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-              >
-                <option value="UX/UI">UX/UI</option>
-                <option value="Operating Systems">Operating Systems</option>
-                <option value="DevOps">DevOps</option>
-                <option value="MobileApps">Mobile Apps</option>
-                <option value="Networking">Networking</option>
-                <option value="OOP">OOP</option>
-                <option value="Notes">Notes</option>
-              </select>
-            </>
-          )}
+          <label>Subject: </label>
+          <select
+            className={subjectError ? "input-error" : ""}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            disabled={event ? true : false}
+          >
+            <option value="UX/UI">UX/UI</option>
+            <option value="Operating Systems">Operating Systems</option>
+            <option value="DevOps">DevOps</option>
+            <option value="MobileApps">Mobile Apps</option>
+            <option value="Networking">Networking</option>
+            <option value="OOP">OOP</option>
+            <option value="Notes">Notes</option>
+          </select>
           <div className="date-time">
             <div>
               <label>Start:</label>

@@ -1,7 +1,6 @@
 import { signInWithEmailAndPassword } from "../services/firebase";
 import React, { useState } from "react";
 import "../assets/css/login.css";
-import SocialMedia from "./SocialMedia";
 
 function Login() {
   const [loginEmail, setLoginEmail] = useState("");
@@ -36,10 +35,10 @@ function Login() {
         </div>
       </div>
       <div className="col-2">
-        <form onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
           <div className="signin">Sign In</div>
           <div className="email">
-            <input
+            <input className="input"
               type="email"
               name="email"
               placeholder="Email Address"
@@ -49,7 +48,7 @@ function Login() {
             />
           </div>
           <div className="password">
-            <input
+            <input className="input"
               type="password"
               name="password"
               placeholder="Password"
