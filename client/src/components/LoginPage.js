@@ -6,6 +6,11 @@ function Login() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(loginEmail, loginPassword);
+  };
+
   return (
     <div className="container">
       <div className="col-1">
@@ -30,37 +35,39 @@ function Login() {
         </div>
       </div>
       <div className="col-2">
-        <div className="signin">Sign In</div>
-        <div className="email">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            required
-            value={loginEmail}
-            onChange={(e) => setLoginEmail(e.target.value)}
-          />
-        </div>
-        <div className="password">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            value={loginPassword}
-            onChange={(e) => setLoginPassword(e.target.value)}
-          />
-        </div>
-        <div className="login">
-          <button className="btn"
-            variant="outline-success"
-            type="submit"
-            onClick={() => {
-              signInWithEmailAndPassword(loginEmail, loginPassword);
-            }}>
-            Login
-          </button>
-        </div>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="signin">Sign In</div>
+          <div className="email">
+            <input className="input"
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+            />
+          </div>
+          <div className="password">
+            <input className="input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+          </div>
+          <div className="login">
+            <button className="btn"
+              variant="outline-success"
+              type="submit"
+              onClick={() => {
+                signInWithEmailAndPassword(loginEmail, loginPassword);
+              }}>
+              Login
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

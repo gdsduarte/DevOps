@@ -1,137 +1,160 @@
-import { formatDate } from '@fullcalendar/core'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, handleEventClick } from '../services/eventUtils'
-//import { formatEvent, createEvent, updateEvent, deleteEvent } from './eventUtils';
-import TingleModal from '../routers/tingleModal';
-import React from "react";
-import * as FullCalendar from "@fullcalendar/react";
-import '../App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from "react";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { fetchEvents } from "../services/eventService";
+import EventModal from "./EventModal";
+import { getSubjectStyle } from "../components/CalendarUtils";
 
-const calendarOptions = {
-  plugins: [dayGridPlugin],
-  weekNumbers: true,
-  weekNumbersWithinDays: true,
-  fixedWeekCount: false,
-  height: 'auto',
-  contentHeight: 'auto',
-  /* weekNumberContent: (weekNumber) => {
-      if (weekNumber <= 4) {
-          return weekNumber;
-      }
-      return '';
-  }, */
-  select: (info) => {
-    const { start, end, jsEvent, view } = info;
-    const eventSources = view.calendar.getEventSources();
-    const events = [];
-    eventSources.forEach((eventSource) => {
-      const eventSourceEvents = eventSource.getEvents();
-      eventSourceEvents.forEach((event) => {
-        if (event.start < end && event.end > start) {
-          events.push(event);
-        }
+const Calendar = ({ onEventsChange }) => {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calendarRef, setCalendarRef] = useState(null);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      const fetchedEvents = await fetchEvents();
+      const updatedEvents = fetchedEvents.map((event) => {
+        const eventStyle = getSubjectStyle(event.subject);
+        return {
+          ...event,
+          borderColor: eventStyle.backgroundColor,
+          backgroundColor: eventStyle.backgroundColor,
+          textColor: eventStyle.color,
+          start: new Date(event.start),
+          end: new Date(event.end),
+        };
       });
+      setEvents(updatedEvents);
+    };
+  
+    loadEvents();
+  }, []);
+
+  const countOverlappingEvents = (selectedRangeStart, selectedRangeEnd) => {
+    const calendarApi = calendarRef.getApi();
+    const events = calendarApi.getEvents();
+    let overlappingEvents = 0;
+  
+    events.forEach((event) => {
+      if (
+        (selectedRangeStart >= event.start && selectedRangeStart < event.end) ||
+        (selectedRangeEnd > event.start && selectedRangeEnd <= event.end) ||
+        (selectedRangeStart < event.start && selectedRangeEnd > event.end)
+      ) {
+        overlappingEvents++;
+      }
     });
-    if (events.length >= 2) {
-      alert('You cannot add more than 2 events on the same day');
-      view.calendar.unselect();
+  
+    return overlappingEvents;
+  };
+  
+  const handleDateClick = (arg) => {
+    const selectedRangeStart = new Date(arg.date);
+    const selectedRangeEnd = new Date(arg.date);
+    selectedRangeEnd.setDate(selectedRangeEnd.getDate() + 1);
+  
+    if (countOverlappingEvents(selectedRangeStart, selectedRangeEnd) >= 2) {
+      alert("You cannot have more than 2 events on the same day.");
+      return;
     }
-  },
-};
-
-const handleDateSelect = (selectInfo) => {
-  TingleModal(selectInfo.view.calendar, selectInfo.startStr, selectInfo.endStr);
-};
-
-export default class EventCalendar extends React.Component {
-
-  state = {
-    weekendsVisible: true,
-    currentEvents: []
+  
+    setSelectedEvent(null);
+    setIsModalOpen(true);
+  };
+  
+  const handleEventClick = (info) => {
+    setSelectedEvent({
+      id: info.event.id,
+      title: info.event.title,
+      subject: info.event._def.extendedProps.subject,
+      start: info.event.start,
+      end: info.event.end,
+      description: info.event._def.extendedProps.description,
+    });
+    setIsModalOpen(true);
   };
 
-  /* constructor(props) {
-    super(props);
-    this.state = {
-      weekendsVisible: true,
-      currentEvents: []
+  const handleEventAdd = (newEvent) => {
+    const updatedEvent = {
+      ...newEvent,
+      borderColor: getSubjectStyle(newEvent.subject).backgroundColor,
+      backgroundColor: getSubjectStyle(newEvent.subject).backgroundColor,
+      textColor: getSubjectStyle(newEvent.subject).color,
     };
-    //this.handleDateSelect = this.handleDateSelect.bind(this);
-    //this.handleEventClick = this.handleEventClick.bind(this);
-    this.handleEvents = this.handleEvents.bind(this);
-    this.handleEventChange = this.handleEventChange.bind(this);
-    this.handleDateClick = this.handleDateClick.bind(this);
-    this.handleEventAdd = this.handleEventAdd.bind(this);
-    this.handleEventDelete = this.handleEventDelete.bind(this);
-    this.handleEventRemove = this.handleEventRemove.bind(this);
-  } */
+  
+    calendarRef.getApi().addEvent(updatedEvent);
+    onEventsChange([...events, updatedEvent]);
+  };
+  
+  const handleEventUpdate = (updatedEvent) => {
+    const eventApi = calendarRef.getApi().getEventById(updatedEvent.id);
+    if (eventApi) {
+      eventApi.setProp('title', updatedEvent.title);
+      eventApi.setProp('subject', updatedEvent.subject);
+      eventApi.setDates(updatedEvent.start, updatedEvent.end);
+      eventApi.setExtendedProp('description', updatedEvent.description);
+      eventApi.setProp('backgroundColor', getSubjectStyle(updatedEvent.subject).backgroundColor);
+    }
+    const updatedEventsList = events.map((event) => {
+      return event.id === updatedEvent.id ? updatedEvent : event;
+    });
+    onEventsChange(updatedEventsList);
+  };
 
-  render() {
+  const handleEventDelete = (deletedEventId) => {
+    const eventApi = calendarRef.getApi().getEventById(deletedEventId);
+    if (eventApi) {
+      eventApi.remove();
+    }
+    const remainingEvents = events.filter((event) => event.id !== deletedEventId);
+    onEventsChange(remainingEvents);
+  };
+
+  const renderEventContent = (eventInfo) => {
     return (
-      <div className='calendar'>
-        {/* {this.renderSidebar()} */}
-        <div className='calendar-main'>
-          <FullCalendar.default
-            {...calendarOptions}
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            }}
-            initialView='dayGridMonth'
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            weekends={this.state.weekendsVisible}
-            initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-            select={handleDateSelect}
-            eventContent={renderEventContent} // custom render function
-            eventClick={handleEventClick}
-            eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-            eventAdd={this.handleEventAdd}
-            eventChange={this.handleEventChange}
-            eventRemove={this.handleEventRemove}
-            events={[]}
-            dateClick={handleDateSelect}
-          />
-        </div>
+      <div>
+        <div className="event-title">{eventInfo.event.title}</div>
       </div>
     );
-  }
+  };
 
-  renderSidebar() {
-    return (
-      <div className='calendar-sidebar'>
-        <div className='calendar-sidebar-section'>
-          <h2>All Events ({this.state.currentEvents.length})</h2>
-          <ul>
-            {this.state.currentEvents.map(renderSidebarEvent)}
-          </ul>
-        </div>
-      </div>
-    )
-  }
-}
-
-function renderEventContent(eventInfo) {
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  )
-}
+    <div>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        initialView="dayGridMonth"
+        dateClick={handleDateClick}
+        eventClick={handleEventClick}
+        editable={true}
+        selectable={true}
+        selectMirror={true}
+        dayMaxEvents={true}
+        contentHeight={570}
+        weekNumbers={true}
+        eventOverlap={false}
+        ref={setCalendarRef}
+        eventContent={renderEventContent}
+        events={events}
+      />
+      <EventModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        event={selectedEvent}
+        onEventAdd={handleEventAdd}
+        onEventUpdate={handleEventUpdate}
+        onEventDelete={handleEventDelete}
+        events={events}
+      />
+    </div>
+  );
+};
 
-function renderSidebarEvent(event) {
-  return (
-    <li key={event.id}>
-      <b>{formatDate(event.start, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <i>{event.title}</i>
-    </li>
-  )
-}
+export default Calendar;
