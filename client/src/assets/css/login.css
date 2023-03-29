@@ -4,6 +4,8 @@ body {
     width: 100%;
     height: 100%;
     margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -13,45 +15,46 @@ body {
     align-items: stretch;
     align-content: space-around;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 .col-1 {
-    float: left;
-    width: 60%;
+    display: flex;
+    flex-direction: column;
+    flex: 0.6;
     height: 100%;
     background-color: #14235D;
-    flex-shrink: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 .col-2 {
-    float: right;
-    width: 40%;
+    display: flex;
+    flex-direction: column;
+    flex: 0.4;
     height: 100%;
 }
 
-img {
+.media {
+    flex-grow: 1;
     display: flex;
-    position: static;
-    flex-shrink: 2;
-    margin-left: 38.4%;
-    margin-top: 30%;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 60%;
     height: 60px;
     background-color: #283C90;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .footer-icons {
-    position: absolute;
-    width: 100%;
+    width: 30%;
+    justify-content: space-evenly;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
@@ -67,80 +70,61 @@ img {
     opacity: 0.7;
 }
 
-.fa-instagram {
-    color: white;
-}
-
-.fa-facebook {
-    color: white;
-}
-
-.fa-linkedin {
-    color: white;
-}
-
+.fa-instagram,
+.fa-facebook,
+.fa-linkedin,
 .fa-youtube {
     color: white;
 }
 
-.signin {
-    position: absolute;
-    width: 129px;
-    height: 44px;
-    left: 65%;
-    top: 176px;
-
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 42px;
+form {
     display: flex;
-    align-items: center;
-    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 80px 50px;
+}
 
+.signin {
+    display: flex;
+    font-weight: bold;
+    font-size: 36px;
     color: #000000;
 }
 
 input {
-    display: block;
     width: 100%;
     height: 100%;
     font-size: 16px;
     border: none;
     border-bottom: solid;
+    background-color: #f2f2f2;
 }
 
 .email {
-    position: absolute;
-    width: 611px;
-    height: 46px;
-    left: 65%;
-    top: 251px;
+    display: flex;
+    height: 50px;
+    margin-top: 20px;
 }
 
 .password {
-    position: absolute;
-    width: 611px;
-    height: 46px;
-    left: 65%;
-    top: 320px;
+    display: flex;
+    height: 50px;
+    margin-top: 20px;
+
 }
 
 .login {
-    position: absolute;
-    width: 594px;
+    display: flex;
     height: 70px;
-    left: 65.68%;
-    top: 82%;
+    margin-top: auto;
 }
 
 .btn {
+    width: 100%;
     background-color: #1D265F;
     border: none;
     color: white;
-    width: 100%;
-    height: 100%;
     text-align: center;
     margin: 4px 2px;
     -webkit-transition-duration: 0.4s;
@@ -148,11 +132,8 @@ input {
     cursor: pointer;
     border-radius: 8px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
     font-weight: 700;
     font-size: 36px;
-    line-height: 42px;
     align-items: center;
     letter-spacing: 0.115em;
 }

@@ -8,13 +8,17 @@ import React, { useState, useEffect } from "react";
 
 function Header() {
   return (
-    <header>
+    <header className="header">
       <div className="logo">
-        <img src={require("../assets/img/logo_calendar.png")} alt=""></img>
+        <img src={require("../assets/img/logo_calendar.png")} alt="logo" />
       </div>
-      <button onClick={logout}>Logout</button>
-      <div className="profile_icon">
-        <img src={require("../assets/img/logo_calendar.png")} alt="profile icon"></img>
+      <div className="profile">
+        <img src={require("../assets/img/logo_calendar.png")} alt="profile icon" />
+        <div className="dropdown-menu">
+          <button className="logout" onClick={logout}>
+            Logout
+          </button>
+        </div>
       </div>
     </header>
   );
