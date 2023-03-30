@@ -1,14 +1,33 @@
-import { signInWithEmailAndPassword } from "../services/firebase";
+import { signInWithEmailAndPassword, registerWithEmailAndPassword } from "../services/firebase";
 import React, { useState } from "react";
 import "../assets/css/login.css";
 
 function Login() {
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signInWithEmailAndPassword(loginEmail, loginPassword);
+  
+    const allowedDomains = ["@student.dorset-college.ie", "@faculty.dorset-college.ie", "@dorset.ie"];
+    const emailDomain = email.substring(email.lastIndexOf("@"));
+  
+    if (!allowedDomains.includes(emailDomain)) {
+      alert("Please use an email address with an allowed domain: \n\n@student.dorset-college.ie \n@faculty.dorset-college.ie \n@dorset.ie");
+      return;
+    }
+  
+    if (isSignUp) {
+      await registerWithEmailAndPassword(email, password);
+    } else {
+      await signInWithEmailAndPassword(email, password);
+    }
+  };
+
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
   };
 
   return (
@@ -36,35 +55,50 @@ function Login() {
       </div>
       <div className="col-2">
         <form className="form" onSubmit={handleSubmit}>
-          <div className="signin">Sign In</div>
+          <div className="signin">{isSignUp ? "Sign Up" : "Sign In"}</div>
+          {isSignUp && (
+            <div className="name">
+              <input
+                className="input"
+                type="text"
+                name="name"
+                placeholder="Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+          )}
           <div className="email">
-            <input className="input"
+            <input
+              className="input"
               type="email"
               name="email"
               placeholder="Email Address"
               required
-              value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="password">
-            <input className="input"
+            <input
+              className="input"
               type="password"
               name="password"
               placeholder="Password"
               required
-              value={loginPassword}
-              onChange={(e) => setLoginPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div className="switch">
+            <button className="text-button" type="button" onClick={toggleForm}>
+              {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+            </button>
+          </div>
           <div className="login">
-            <button className="btn"
-              variant="outline-success"
-              type="submit"
-              onClick={() => {
-                signInWithEmailAndPassword(loginEmail, loginPassword);
-              }}>
-              Login
+            <button className="btn" variant="outline-success" type="submit">
+              {isSignUp ? "Sign Up" : "Login"}
             </button>
           </div>
         </form>

@@ -1,14 +1,19 @@
-# DevOps Assignment
+# **DevOps Assignment**
 ## ***Description***
 
 This is a simple application that allows users to create, read, update and delete event. The application is built using React, Node, Express, FullCalendar and MySQL.
 ## ***Installation***
 
-To run the application, you need to have Node.js and MySQL installed on your machine.
+To run the application, you need to have Node.js and MySQL installed on your machine. Also, you need to have a database created in MySQL.
+To create a database, run the following command in MySQL:
+```sql
+CREATE DATABASE `devops_calendar`;
+```
+The table for the application is created automatically when the application is run for the first time.
 
 To fully run the application, you need to run both the server and the client.
 
-The server is located in the `server` folder and the client is located in the `client` folder.
+The server-side is located in the `server` folder and the client-side is located in the `client` folder.
 
 The server is configured to run the MySQL from the server and locally. If you want to use your own database, you need to change the database configuration in the `server/config/database.js` file.
 
@@ -29,7 +34,7 @@ Open a terminal and run the following commands:
 3. `npm start`
 
 ***
-### ***Building the Application***
+### ***Building the Application*** *( for deployment )*
 
 Open a terminal and run the following commands:
 1. `cd client`

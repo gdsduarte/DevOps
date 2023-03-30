@@ -28,6 +28,9 @@ const createEventModel = (db) => {
     description: {
       type: Sequelize.TEXT,
     },
+    createdByUserId: {
+      type: Sequelize.STRING,
+    },
     backgroundColor: {
       type: Sequelize.STRING,
     },

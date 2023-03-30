@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
 import { getSubjectStyle, canAddEvent } from "../components/CalendarUtils";
 import "../assets/css/calendar.css";
+import { useRole } from '../services/RoleProvider';
 
 const customStyles = {
   content: {
@@ -53,6 +54,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
   const [startTimeError, setStartTimeError] = useState(false);
   const [endDateError, setEndDateError] = useState(false);
   const [endTimeError, setEndTimeError] = useState(false);
+  const { role } = useRole();
 
   useEffect(() => {
     if (event) {
@@ -73,6 +75,17 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       setDescription("");
     }
   }, [event]);
+
+  const subjectOptions = [
+    "Select Subject",
+    "UX/UI",
+    "Operating Systems",
+    "DevOps",
+    "Mobile Apps",
+    "Networking",
+    "OOP",
+    "Notes",
+  ];
 
   const validateInputs = () => {
     let isValid = true;
@@ -230,15 +243,14 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             className={subjectError ? "input-error" : ""}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            disabled={event ? true : false}
           >
-            <option value="UX/UI">UX/UI</option>
-            <option value="Operating Systems">Operating Systems</option>
-            <option value="DevOps">DevOps</option>
-            <option value="MobileApps">Mobile Apps</option>
-            <option value="Networking">Networking</option>
-            <option value="OOP">OOP</option>
-            <option value="Notes">Notes</option>
+            {subjectOptions
+              .filter((option) => role !== "student" || option === "Notes" || option === "Select Subject")
+              .map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
           </select>
           <div className="date-time">
             <div>
@@ -292,8 +304,10 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             onChange={(e) => setDescription(e.target.value)}
           />
         </form>
-        <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
-        {event && <button onClick={handleDelete}>Delete</button>}
+          <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
+        {event && (
+          <button onClick={handleDelete}>Delete</button>
+        )}
         <button onClick={handleCancel}>Cancel</button>
       </div>
     </Modal>

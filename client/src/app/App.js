@@ -1,22 +1,15 @@
-import { useState, useEffect } from 'react';
 import Home from '../components/HomePage';
 import Login from '../components/LoginPage';
-import firebase from '../services/firebase';
+import { useRole } from '../services/RoleProvider';
 
 function App() {
-    const [user, setUser] = useState(null);
+  const { user, role } = useRole(); // Use the useRole hook to get user and role
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            setUser(user);
-        })
-    }, [])
-
-    return (
-        <div>
-            {user ? <Home user={user} /> : <Login />}
-        </div>
-    );
+  return (
+    <div>
+      {user ? <Home user={user} role={role} /> : <Login />}
+    </div>
+  );
 }
 
 export default App;
