@@ -7,16 +7,24 @@ import { fetchEvents } from "../services/eventService";
 import EventModal from "./EventModal";
 import { getSubjectStyle } from "../components/CalendarUtils";
 
-const Calendar = ({ onEventsChange }) => {
+const Calendar = ({ onEventsChange, user }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarRef, setCalendarRef] = useState(null);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
+    console.log('useEffect triggered', user);
     const loadEvents = async () => {
       const fetchedEvents = await fetchEvents();
-      const updatedEvents = fetchedEvents.map((event) => {
+      console.log("fetchedEvents:", fetchedEvents); // Log fetchedEvents
+  
+      const filteredEvents = fetchedEvents.filter((event) => {
+        return event.subject !== "Notes" || (user && event.createdByUserId === user.uid);
+      });
+      console.log("filteredEvents:", filteredEvents); // Log filteredEvents
+  
+      const updatedEvents = filteredEvents.map((event) => {
         const eventStyle = getSubjectStyle(event.subject);
         return {
           ...event,
@@ -27,11 +35,18 @@ const Calendar = ({ onEventsChange }) => {
           end: new Date(event.end),
         };
       });
+      console.log("updatedEvents:", updatedEvents); // Log updatedEvents
+  
       setEvents(updatedEvents);
     };
   
-    loadEvents();
-  }, []);
+    if (user) {
+      loadEvents();
+    }
+  }, [user]);
+  
+  
+   
 
   const countOverlappingEvents = (selectedRangeStart, selectedRangeEnd) => {
     const calendarApi = calendarRef.getApi();
@@ -139,7 +154,6 @@ const Calendar = ({ onEventsChange }) => {
         dayMaxEvents={true}
         contentHeight={570}
         weekNumbers={true}
-        eventOverlap={false}
         ref={setCalendarRef}
         eventContent={renderEventContent}
         events={events}

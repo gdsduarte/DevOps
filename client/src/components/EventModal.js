@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
 import { getSubjectStyle, canAddEvent } from "../components/CalendarUtils";
 import "../assets/css/calendar.css";
-import { useRole } from '../services/RoleProvider';
+import { useAuth } from '../services/AuthProvider';
 
 const customStyles = {
   content: {
@@ -54,7 +54,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
   const [startTimeError, setStartTimeError] = useState(false);
   const [endDateError, setEndDateError] = useState(false);
   const [endTimeError, setEndTimeError] = useState(false);
-  const { role } = useRole();
+  const { user, role } = useAuth();
 
   useEffect(() => {
     if (event) {
@@ -180,6 +180,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       start: new Date(`${startDate}T${start}`),
       end: endDate && end ? new Date(`${endDate}T${end}`) : null,
       description,
+      createdByUserId: user.uid,
       borderColor: eventStyle.backgroundColor,
       backgroundColor: eventStyle.backgroundColor,
       textColor: eventStyle.color,

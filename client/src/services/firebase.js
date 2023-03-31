@@ -35,7 +35,6 @@ function assignRole(email) {
         return 'admin';
     } else {
         // Handle other cases, e.g., throw an error or set a default role
-        
     }
 }
 
@@ -54,7 +53,7 @@ export const signInWithGoogle = async () => {
                 name: user.displayName,
                 authProvider: "google",
                 email: user.email,
-                role: assignRole(user.email), // Store the role directly in the users collection
+                role: assignRole(user.email),
             });
         }
     } catch (err) {

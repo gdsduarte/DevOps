@@ -24,7 +24,7 @@ function Header() {
   );
 }
 
-function Main() {
+function Main({ user }) {
   const today = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString('en-US', options);
@@ -70,7 +70,7 @@ function Main() {
         <div className="center">
           <div className="button-bar-mid"></div>
           <div className="calendar-mid">
-            <Calendar onEventsChange={setCurrentEvents} />
+            <Calendar user={user} onEventsChange={setCurrentEvents} />
           </div>
         </div>
         <div className="right-side">
@@ -110,7 +110,7 @@ function Footer() {
     <footer>
       <div className="column_left">
         <ul>
-          <li><a href="#top">About us</a></li>
+          <li>          <a href="#top">About us</a></li>
           <li><a href="#top">Privacy Policy</a></li>
           <li><a href="#top">Terms of use</a></li>
         </ul>
@@ -126,14 +126,15 @@ function Footer() {
   );
 }
 
-function Home() {
+function Home({ user }) {
   return (
     <div>
       <Header />
-      <Main />
+      <Main user={user} />
       <Footer />
     </div>
   );
 }
 
 export default Home;
+
