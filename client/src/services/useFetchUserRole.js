@@ -12,7 +12,7 @@ const useFetchUserRole = (user) => {
         if (snapshot.exists()) {
           const data = snapshot.data();
           const fetchedRole = data.role;
-          console.log('Fetched role:', fetchedRole);
+          /* console.log('Fetched role:', fetchedRole); */
           setRole(fetchedRole);
         }
       };

@@ -14,15 +14,15 @@ const Calendar = ({ onEventsChange, user }) => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    console.log('useEffect triggered', user);
+    /* console.log('useEffect triggered', user); */
     const loadEvents = async () => {
       const fetchedEvents = await fetchEvents();
-      console.log("fetchedEvents:", fetchedEvents); // Log fetchedEvents
+      /* console.log("fetchedEvents:", fetchedEvents); */
   
       const filteredEvents = fetchedEvents.filter((event) => {
         return event.subject !== "Notes" || (user && event.createdByUserId === user.uid);
       });
-      console.log("filteredEvents:", filteredEvents); // Log filteredEvents
+      /* console.log("filteredEvents:", filteredEvents); */
   
       const updatedEvents = filteredEvents.map((event) => {
         const eventStyle = getSubjectStyle(event.subject);
@@ -35,7 +35,7 @@ const Calendar = ({ onEventsChange, user }) => {
           end: new Date(event.end),
         };
       });
-      console.log("updatedEvents:", updatedEvents); // Log updatedEvents
+      /* console.log("updatedEvents:", updatedEvents); */
   
       setEvents(updatedEvents);
     };
@@ -45,9 +45,6 @@ const Calendar = ({ onEventsChange, user }) => {
     }
   }, [user]);
   
-  
-   
-
   const countOverlappingEvents = (selectedRangeStart, selectedRangeEnd) => {
     const calendarApi = calendarRef.getApi();
     const events = calendarApi.getEvents();

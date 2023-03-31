@@ -40,7 +40,7 @@ export const canAddEvent = (events, start, end) => {
   return countOverlappingEvents(overlappingEvents, selectedRangeStart, selectedRangeEnd) < 2;
 };
 
-export const EventBar = ({ events }) => {
+export const EventBar = ({ events, user }) => {
   const renderSidebarEvent = (event) => {
     const endDay = event.end.toLocaleString("default", { weekday: "long" });
     const endDate = event.end.toLocaleString("default", { Date: "long" });
@@ -63,13 +63,9 @@ export const EventBar = ({ events }) => {
     );
   };
 
-  const sortedEvents = events.sort((a, b) => {
-    return new Date(a.end) - new Date(b.end);
-  });
-
-  /* const sortedEvents = events
-    .filter((event) => event.subject !== "Notes") // filter out events with subject "Notes"
-    .sort((a, b) => new Date(a.end) - new Date(b.end)); */
+  const sortedEvents = events
+    .filter((event) => event.subject === "Notes" ? event.createdByUserId === user.uid : true)
+    .sort((a, b) => new Date(a.end) - new Date(b.end));
 
   const dueEvents = sortedEvents.filter((event) => new Date() > event.end);
   const upcomingEvents = sortedEvents.filter((event) => new Date() <= event.end);
@@ -84,13 +80,18 @@ export const EventBar = ({ events }) => {
   );
 };
 
-export const DeadlineBar = ({ events, subjectFilter }) => {
+export const DeadlineBar = ({ events, subjectFilter, user }) => {
   const filteredEvents =
     subjectFilter === "All"
       ? events
       : events.filter((event) => event.subject === subjectFilter);
 
-  const groupedEvents = filteredEvents.reduce((acc, event) => {
+  const eventsToShow = filteredEvents.filter(
+    (event) =>
+      !(event.subject === "Notes" && event.createdByUserId !== user.uid)
+  );
+
+  const groupedEvents = eventsToShow.reduce((acc, event) => {
     if (!acc[event.subject]) {
       acc[event.subject] = [];
     }
@@ -103,12 +104,8 @@ export const DeadlineBar = ({ events, subjectFilter }) => {
       (event.end - new Date()) / (1000 * 60 * 60 * 24)
     );
 
-    /* const subjectStyle = getSubjectStyle(event.subject); */
-
     return (
       <li key={event.id}
-        
-      /* style={{ color: subjectStyle.color }} */
       >
         <strong>{event.title}</strong>
         <br />
@@ -123,7 +120,7 @@ export const DeadlineBar = ({ events, subjectFilter }) => {
     );
   };
 
-  const sortedEvents = filteredEvents.sort((a, b) => {
+  const sortedEvents = eventsToShow.sort((a, b) => {
     return a.end - b.end;
   });
 
@@ -156,7 +153,7 @@ export const DeadlineBar = ({ events, subjectFilter }) => {
   );
 };
 
-export const NotesBar = ({ events }) => {
+export const NotesBar = ({ events, user }) => {
   const renderNotesEvent = (event) => {
     const endDate = event.end.toLocaleString("default", { Date: "long" });
     const subjectStyle = getSubjectStyle(event.subject);
@@ -171,9 +168,11 @@ export const NotesBar = ({ events }) => {
     );
   };
 
-  const sortedEvents = events.filter(event => event.subject === "Notes").sort((a, b) => {
-    return a.end - b.end;
-  });
+  const sortedEvents = events
+    .filter((event) => event.subject === "Notes" && event.createdByUserId === user.uid)
+    .sort((a, b) => new Date(a.end) - new Date(b.end));
+
+  /* console.log("Filtered Notes events:", sortedEvents); */
 
   return (
     <div>

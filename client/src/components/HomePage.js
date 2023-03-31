@@ -58,13 +58,13 @@ function Main({ user }) {
             <div className="events-title">
               <h1>Events</h1>
             </div>
-            <EventBar events={currentEvents} />
+            <EventBar events={currentEvents} user={user} />
           </div>
           <div className="notes-title">
             <h1>Notes</h1>
           </div>
           <div className="column-notes">
-            <NotesBar events={currentEvents} />
+            <NotesBar events={currentEvents} user={user} />
           </div>
         </div>
         <div className="center">
@@ -97,7 +97,7 @@ function Main({ user }) {
           </div>
           <div className="column-deadline">
             <h3 className="all-filter" onClick={() => setSubjectFilter("All")}>All</h3>
-            <DeadlineBar events={currentEvents} subjectFilter={subjectFilter} />
+            <DeadlineBar events={currentEvents} subjectFilter={subjectFilter} user={user} />
           </div>
         </div>
       </section>
@@ -137,4 +137,3 @@ function Home({ user }) {
 }
 
 export default Home;
-

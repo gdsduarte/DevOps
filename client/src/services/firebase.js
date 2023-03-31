@@ -3,21 +3,14 @@ import { getFirestore, collection, addDoc, where, query, getDocs, doc, setDoc } 
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-    /* apiKey: "AIzaSyCagFPcXoPRzWBsMw8dglfOPMMDdINVp4k",
+    apiKey: "AIzaSyCagFPcXoPRzWBsMw8dglfOPMMDdINVp4k",
     authDomain: "devopsproject-c4f6b.firebaseapp.com",
+    databaseURL: "https://devopsproject-c4f6b-default-rtdb.firebaseio.com/",
     projectId: "devopsproject-c4f6b",
     storageBucket: "devopsproject-c4f6b.appspot.com",
     messagingSenderId: "129199982811",
     appId: "1:129199982811:web:3f96a32b7ad711172ee4fe",
-    measurementId: "G-B94GKFW1V3" */
-
-    apiKey: "AIzaSyCAXMmStTvj2pey8bo1MQ_UkAqts9One40",
-    authDomain: "devops-dorset.firebaseapp.com",
-    databaseURL: "https://devops-dorset-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "devops-dorset",
-    storageBucket: "devops-dorset.appspot.com",
-    messagingSenderId: "838804017334",
-    appId: "1:838804017334:web:04fef0ae6cee2a56905617"
+    measurementId: "G-B94GKFW1V3"
 };
 
 firebase.initializeApp(firebaseConfig);
