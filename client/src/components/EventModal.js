@@ -165,15 +165,15 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
 
   const handleSave = async () => {
     const eventStyle = getSubjectStyle(subject);
-
+  
     if (!validateInputs()) {
       return;
     }
-
+  
     if (!validateDateTime()) {
       return;
     }
-
+  
     const newEvent = {
       title,
       subject,
@@ -185,24 +185,18 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       backgroundColor: eventStyle.backgroundColor,
       textColor: eventStyle.color,
     };
-
+  
     if (event) {
       // Update event case
-      if (canAddEvent(events.filter((e) => e.id !== event.id), newEvent.start, newEvent.end)) {
-        return;
-      }
+      await updateEvent(event.id, newEvent);
+      onEventUpdate({ ...newEvent, id: event.id });
     } else {
       // Add new event case
       if (!canAddEvent(events, newEvent.start, newEvent.end)) {
         alert("Cannot add event. \n\nMaximum two events are allowed at the same range.");
         return;
       }
-    }
-
-    if (event) {
-      await updateEvent(event.id, newEvent);
-      onEventUpdate({ ...newEvent, id: event.id });
-    } else {
+  
       const createdEvent = await createEvent(newEvent);
       onEventAdd({ ...newEvent, id: createdEvent.id });
     }
@@ -305,8 +299,10 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             onChange={(e) => setDescription(e.target.value)}
           />
         </form>
+        {!(role === 'student' && subject !== 'Notes') && (
           <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
-        {event && (
+        )}
+        {event && !(role === 'student' && subject !== 'Notes') && (
           <button onClick={handleDelete}>Delete</button>
         )}
         <button onClick={handleCancel}>Cancel</button>

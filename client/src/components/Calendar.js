@@ -149,7 +149,7 @@ const Calendar = ({ onEventsChange, user }) => {
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
-        contentHeight={570}
+        contentHeight={630}
         weekNumbers={true}
         ref={setCalendarRef}
         eventContent={renderEventContent}
