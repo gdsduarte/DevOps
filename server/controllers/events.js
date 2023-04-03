@@ -24,13 +24,14 @@ export const getEventById = async (req, res) => {
  
 export const createEvent = async (req, res) => {
     try {
+        console.log(req.body); // Log the request body
         await Event.create(req.body);
         res.json({
             "message": "Events Created"
         });
     } catch (error) {
         res.json({ message: error.message });
-    }  
+    }
 }
  
 export const updateEvent = async (req, res) => {

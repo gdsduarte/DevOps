@@ -24,7 +24,7 @@ function Header() {
   );
 }
 
-function Main() {
+function Main({ user }) {
   const today = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString('en-US', options);
@@ -58,19 +58,19 @@ function Main() {
             <div className="events-title">
               <h1>Events</h1>
             </div>
-            <EventBar events={currentEvents} />
+            <EventBar events={currentEvents} user={user} />
           </div>
           <div className="notes-title">
             <h1>Notes</h1>
           </div>
           <div className="column-notes">
-            <NotesBar events={currentEvents} />
+            <NotesBar events={currentEvents} user={user} />
           </div>
         </div>
         <div className="center">
           <div className="button-bar-mid"></div>
           <div className="calendar-mid">
-            <Calendar onEventsChange={setCurrentEvents} />
+            <Calendar user={user} onEventsChange={setCurrentEvents} />
           </div>
         </div>
         <div className="right-side">
@@ -97,7 +97,7 @@ function Main() {
           </div>
           <div className="column-deadline">
             <h3 className="all-filter" onClick={() => setSubjectFilter("All")}>All</h3>
-            <DeadlineBar events={currentEvents} subjectFilter={subjectFilter} />
+            <DeadlineBar events={currentEvents} subjectFilter={subjectFilter} user={user} />
           </div>
         </div>
       </section>
@@ -110,7 +110,7 @@ function Footer() {
     <footer>
       <div className="column_left">
         <ul>
-          <li><a href="#top">About us</a></li>
+          <li>          <a href="#top">About us</a></li>
           <li><a href="#top">Privacy Policy</a></li>
           <li><a href="#top">Terms of use</a></li>
         </ul>
@@ -126,11 +126,11 @@ function Footer() {
   );
 }
 
-function Home() {
+function Home({ user }) {
   return (
     <div>
       <Header />
-      <Main />
+      <Main user={user} />
       <Footer />
     </div>
   );

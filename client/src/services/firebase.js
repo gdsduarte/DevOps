@@ -1,10 +1,11 @@
 import firebase from "firebase/compat/app";
-import { getFirestore, collection, addDoc, where, query, getDocs } from "firebase/firestore"
+import { getFirestore, collection, addDoc, where, query, getDocs, doc, setDoc } from "firebase/firestore"
 import "firebase/compat/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCagFPcXoPRzWBsMw8dglfOPMMDdINVp4k",
     authDomain: "devopsproject-c4f6b.firebaseapp.com",
+    databaseURL: "https://devopsproject-c4f6b-default-rtdb.firebaseio.com/",
     projectId: "devopsproject-c4f6b",
     storageBucket: "devopsproject-c4f6b.appspot.com",
     messagingSenderId: "129199982811",
@@ -13,10 +14,22 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = getFirestore();
+export const db = getFirestore();
 
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
+
+function assignRole(email) {
+    if (email.endsWith('@student.dorset-college.ie')) {
+        return 'student';
+    } else if (email.endsWith('@faculty.dorset-college.ie')) {
+        return 'teacher';
+    } else if (email.endsWith('@dorset.ie')) {
+        return 'admin';
+    } else {
+        // Handle other cases, e.g., throw an error or set a default role
+    }
+}
 
 export const auth = firebase.auth();
 export default firebase;
@@ -33,6 +46,7 @@ export const signInWithGoogle = async () => {
                 name: user.displayName,
                 authProvider: "google",
                 email: user.email,
+                role: assignRole(user.email),
             });
         }
     } catch (err) {
@@ -50,18 +64,21 @@ export const signInWithEmailAndPassword = async (email, password) => {
 
 export const registerWithEmailAndPassword = async (name, email, password) => {
     try {
-        const res = await auth.createUserWithEmailAndPassword(email, password);
-        const user = res.user;
-        await addDoc(collection(db, "users"), {
-            uid: user.uid,
-            name,
-            authProvider: "local",
-            email,
-        });
+      const res = await auth.createUserWithEmailAndPassword(name, email, password);
+      const user = res.user;
+      const userRef = doc(collection(db, "users"), user.uid);
+  
+      await setDoc(userRef, {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "email",
+        email: user.email,
+        role: assignRole(user.email),
+      });
     } catch (err) {
-        alert(err.message);
+      alert(err.message);
     }
-};
+  };
 
 export const sendPasswordResetEmail = async (email) => {
     try {
@@ -76,4 +93,3 @@ export const sendPasswordResetEmail = async (email) => {
 export const logout = () => {
     auth.signOut();
 };
-

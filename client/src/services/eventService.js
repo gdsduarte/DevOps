@@ -3,6 +3,7 @@ import http from "./http-common";
 const fetchEvents = async () => {
   try {
     const response = await http.get("/events");
+    /* console.log("Fetched events:", response.data); */
     return response.data;
   } catch (error) {
     console.error("Error fetching events:", error);

@@ -86,7 +86,6 @@ ul li {
     display: block;
 }
 
-
 /* --------calendar-------- */
 main {
     width: 100%;
@@ -133,12 +132,12 @@ section {
 
 .column-events {
     width: 100%;
-    height: 380px;
     overflow-y: auto;
     border-top-style: solid;
     border-radius: 15px 0;
     border-width: 5px;
     border-color: #BFE0FF;
+    flex: 0.7;
 }
 
 .passed-events {
@@ -171,6 +170,7 @@ section {
     border-width: 5px;
     border-color: #BFE0FF;
     overflow-y: auto;
+    flex: 0.3;
 }
 
 .notes-title {
@@ -293,7 +293,7 @@ section {
 
 .column-deadline {
     width: 100%;
-    height: 230px;
+    height: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -446,6 +446,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 0 50px;
+    z-index: 5;
 }
 
 .column_left,
@@ -492,8 +493,6 @@ footer {
 .column_mid .social a {
     width: 100%;
 }
-
-
 
 .column_mid .social img {
     display: block;

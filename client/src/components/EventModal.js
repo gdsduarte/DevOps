@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { createEvent, updateEvent, deleteEvent } from "../services/eventService";
 import { getSubjectStyle, canAddEvent } from "../components/CalendarUtils";
 import "../assets/css/calendar.css";
+import { useAuth } from '../services/AuthProvider';
 
 const customStyles = {
   content: {
@@ -53,6 +54,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
   const [startTimeError, setStartTimeError] = useState(false);
   const [endDateError, setEndDateError] = useState(false);
   const [endTimeError, setEndTimeError] = useState(false);
+  const { user, role } = useAuth();
 
   useEffect(() => {
     if (event) {
@@ -73,6 +75,17 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       setDescription("");
     }
   }, [event]);
+
+  const subjectOptions = [
+    "Select Subject",
+    "UX/UI",
+    "Operating Systems",
+    "DevOps",
+    "Mobile Apps",
+    "Networking",
+    "OOP",
+    "Notes",
+  ];
 
   const validateInputs = () => {
     let isValid = true;
@@ -152,43 +165,38 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
 
   const handleSave = async () => {
     const eventStyle = getSubjectStyle(subject);
-
+  
     if (!validateInputs()) {
       return;
     }
-
+  
     if (!validateDateTime()) {
       return;
     }
-
+  
     const newEvent = {
       title,
       subject,
       start: new Date(`${startDate}T${start}`),
       end: endDate && end ? new Date(`${endDate}T${end}`) : null,
       description,
+      createdByUserId: user.uid,
       borderColor: eventStyle.backgroundColor,
       backgroundColor: eventStyle.backgroundColor,
       textColor: eventStyle.color,
     };
-
+  
     if (event) {
       // Update event case
-      if (canAddEvent(events.filter((e) => e.id !== event.id), newEvent.start, newEvent.end)) {
-        return;
-      }
+      await updateEvent(event.id, newEvent);
+      onEventUpdate({ ...newEvent, id: event.id });
     } else {
       // Add new event case
       if (!canAddEvent(events, newEvent.start, newEvent.end)) {
         alert("Cannot add event. \n\nMaximum two events are allowed at the same range.");
         return;
       }
-    }
-
-    if (event) {
-      await updateEvent(event.id, newEvent);
-      onEventUpdate({ ...newEvent, id: event.id });
-    } else {
+  
       const createdEvent = await createEvent(newEvent);
       onEventAdd({ ...newEvent, id: createdEvent.id });
     }
@@ -230,15 +238,14 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             className={subjectError ? "input-error" : ""}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            disabled={event ? true : false}
           >
-            <option value="UX/UI">UX/UI</option>
-            <option value="Operating Systems">Operating Systems</option>
-            <option value="DevOps">DevOps</option>
-            <option value="MobileApps">Mobile Apps</option>
-            <option value="Networking">Networking</option>
-            <option value="OOP">OOP</option>
-            <option value="Notes">Notes</option>
+            {subjectOptions
+              .filter((option) => role !== "student" || option === "Notes" || option === "Select Subject")
+              .map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
           </select>
           <div className="date-time">
             <div>
@@ -292,8 +299,12 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
             onChange={(e) => setDescription(e.target.value)}
           />
         </form>
-        <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
-        {event && <button onClick={handleDelete}>Delete</button>}
+        {!(role === 'student' && subject !== 'Notes') && (
+          <button onClick={handleSave}>{event ? "Save Changes" : "Add Event"}</button>
+        )}
+        {event && !(role === 'student' && subject !== 'Notes') && (
+          <button onClick={handleDelete}>Delete</button>
+        )}
         <button onClick={handleCancel}>Cancel</button>
       </div>
     </Modal>

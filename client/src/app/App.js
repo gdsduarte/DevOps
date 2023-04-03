@@ -1,22 +1,14 @@
-import { useState, useEffect } from 'react';
-import Home from '../components/HomePage';
-import Login from '../components/LoginPage';
-import firebase from '../services/firebase';
+import Home from "../components/HomePage";
+import Login from "../components/LoginPage";
+import { useAuth } from "../services/AuthProvider";
 
 function App() {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            setUser(user);
-        })
-    }, [])
-
-    return (
-        <div>
-            {user ? <Home user={user} /> : <Login />}
-        </div>
-    );
+  const { user, role } = useAuth();
+  return (
+    <div>
+      {user ? <Home user={user} role={role} /> : <Login />}
+    </div>
+  );
 }
 
 export default App;

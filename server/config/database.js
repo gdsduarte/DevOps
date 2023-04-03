@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 
 /* Server */
 const server = {
-  database: "DevOps_Calendar",
+  database: "devops_calendar",
   username: "root",
   password: "#QN-*E$dT+@^i,YH",
   host: "35.193.37.252",
@@ -12,10 +12,9 @@ const server = {
   },
 };
 
-
 /* Localhost */
 const localhost = {
-  database: "DevOps_Calendar", 
+  database: "devops_calendar", 
   username: "root", // Change this to your username
   password: "gds437", // Change this to your password
   host: "localhost",
