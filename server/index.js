@@ -32,4 +32,4 @@ app.get('/api/server-status', (req, res) => {
   res.status(200).json({ status: 'Server is running' });
 });
 
-app.listen(5000, () => console.log("Server running at port 5000"));
+app.listen(8080, () => console.log("Server running at port 8080"));
