@@ -19,4 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use(eventRoutes);
 
+app.get('/api/server-status', (req, res) => {
+  res.status(200).json({ status: 'Server is running' });
+});
+
 app.listen(5000, () => console.log("Server running at port 5000"));
