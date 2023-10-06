@@ -5,6 +5,7 @@ import { getSubjectStyle, canAddEvent } from "../components/CalendarUtils";
 import "../assets/css/calendar.css";
 import { useAuth } from '../services/AuthProvider';
 
+// Modal styles
 const customStyles = {
   content: {
     top: "50%",
@@ -26,6 +27,7 @@ const customStyles = {
   },
 };
 
+// Generate time options
 const generateTimeOptions = () => {
   const options = [];
 
@@ -37,6 +39,7 @@ const generateTimeOptions = () => {
   return options;
 };
 
+// Event modal component
 Modal.setAppElement("#root");
 
 const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEventDelete, events }) => {
@@ -56,6 +59,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
   const [endTimeError, setEndTimeError] = useState(false);
   const { user, role } = useAuth();
 
+  // Set modal state when event is updated or deleted from the calendar component or when the modal is closed 
   useEffect(() => {
     if (event) {
       setTitle(event.title);
@@ -76,6 +80,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     }
   }, [event]);
 
+  // List of subjects for the subject dropdown
   const subjectOptions = [
     "Select Subject",
     "UX/UI",
@@ -87,6 +92,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     "Notes",
   ];
 
+  // Validate inputs
   const validateInputs = () => {
     let isValid = true;
 
@@ -135,6 +141,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     return isValid;
   };
 
+  // Validate date and time inputs
   const validateDateTime = () => {
     const startDateObj = new Date(`${startDate}T${start}`);
     const endDateObj = endDate && end ? new Date(`${endDate}T${end}`) : null;
@@ -147,6 +154,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     return true;
   };
 
+  // Reset modal form fields
   const resetFields = () => {
     setTitle("");
     setSubject("");
@@ -163,6 +171,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     setEndTimeError("");
   };
 
+  // Handle save button
   const handleSave = async () => {
     const eventStyle = getSubjectStyle(subject);
   
@@ -174,6 +183,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       return;
     }
   
+    // Create new event object 
     const newEvent = {
       title,
       subject,
@@ -186,6 +196,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
       textColor: eventStyle.color,
     };
   
+    // Check if the event is being updated or a new event is being added 
     if (event) {
       // Update event case
       await updateEvent(event.id, newEvent);
@@ -197,6 +208,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
         return;
       }
   
+      // Add new event to the database 
       const createdEvent = await createEvent(newEvent);
       onEventAdd({ ...newEvent, id: createdEvent.id });
     }
@@ -204,6 +216,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     onClose();
   };
 
+  // Handle delete button
   const handleDelete = async () => {
     if (event) {
       await deleteEvent(event.id);
@@ -213,6 +226,7 @@ const EventModal = ({ isOpen, onClose, event, onEventAdd, onEventUpdate, onEvent
     onClose();
   };
 
+  // Handle cancel button
   const handleCancel = () => {
     resetFields();
     onClose();

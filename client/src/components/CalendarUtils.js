@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EventModal from "./EventModal";
 import "../assets/css/calendar.css";
 
+// Subject list with styles for each subject (color and background color) 
 export const Subjects = [
   { name: "UX/UI", style: { color: "#0084FF", backgroundColor: "#E6F3FF" } },
   { name: "Operating Systems", style: { color: "#FF00F5", backgroundColor: "#FFCDFD" } },
@@ -12,11 +13,13 @@ export const Subjects = [
   { name: "Notes", style: { color: "#848383", backgroundColor: "#E8E8E8" } },
 ];
 
+// Get the style for a subject 
 export const getSubjectStyle = (subjectName) => {
   const subject = Subjects.find((subj) => subj.name === subjectName);
   return subject ? subject.style : {};
 };
 
+// Count the number of overlapping events 
 export const countOverlappingEvents = (events, start, end) => {
   if (!start || !end || !events) {
     return 0;
@@ -31,6 +34,7 @@ export const countOverlappingEvents = (events, start, end) => {
   return overlappingEvents.length;
 };
 
+// Check if an event can be added to the calendar 
 export const canAddEvent = (events, start, end) => {
   const selectedRangeStart = new Date(start);
   const selectedRangeEnd = new Date(end || start);
@@ -41,15 +45,18 @@ export const canAddEvent = (events, start, end) => {
   return countOverlappingEvents(overlappingEvents, selectedRangeStart, selectedRangeEnd) < 2;
 };
 
+// Event bar component 
 export const EventBar = ({ events, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // Handle click on an event in the sidebar
   const handleClick = (event) => {
     setSelectedEvent(event);
     setShowModal(true);
   };
 
+  // Render an event in the sidebar 
   const renderSidebarEvent = (event) => {
     const endDay = event.end.toLocaleString("default", { weekday: "long" });
     const endDate = event.end.toLocaleString("default", { Date: "long" });
@@ -74,10 +81,12 @@ export const EventBar = ({ events, user }) => {
     );
   };
 
+  // Sort events by date and filter by subject
   const sortedEvents = events
     .filter((event) => event.subject === "Notes" ? event.createdByUserId === user.uid : true)
     .sort((a, b) => new Date(a.end) - new Date(b.end));
 
+  // Split events into passed and upcoming
   const dueEvents = sortedEvents.filter((event) => new Date() > event.end);
   const upcomingEvents = sortedEvents.filter((event) => new Date() <= event.end);
 
@@ -102,26 +111,30 @@ export const EventBar = ({ events, user }) => {
   );
 };
 
-
+// Deadline bar component
 export const DeadlineBar = ({ events, subjectFilter, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // Handle click on an event in the sidebar
   const handleClick = (event) => {
     setSelectedEvent(event);
     setShowModal(true);
   };
   
+  // Filter events by subject
   const filteredEvents =
     subjectFilter === "All"
       ? events
       : events.filter((event) => event.subject === subjectFilter);
 
+  // Filter out notes created by other users 
   const eventsToShow = filteredEvents.filter(
     (event) =>
       !(event.subject === "Notes" && event.createdByUserId !== user.uid)
   );
 
+  // Group events by subject 
   const groupedEvents = eventsToShow.reduce((acc, event) => {
     if (!acc[event.subject]) {
       acc[event.subject] = [];
@@ -130,6 +143,7 @@ export const DeadlineBar = ({ events, subjectFilter, user }) => {
     return acc;
   }, {});
 
+  // Render an event in the sidebar 
   const renderDeadlineEvent = (event) => {
     const daysLeft = Math.ceil(
       (event.end - new Date()) / (1000 * 60 * 60 * 24)
@@ -152,6 +166,7 @@ export const DeadlineBar = ({ events, subjectFilter, user }) => {
     );
   };
 
+  // Sort events by date 
   const sortedEvents = eventsToShow.sort((a, b) => {
     return a.end - b.end;
   });
@@ -196,15 +211,18 @@ export const DeadlineBar = ({ events, subjectFilter, user }) => {
   );
 };
 
+// Notes bar component
 export const NotesBar = ({ events, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  // Handle click on an event in the sidebar
   const handleClick = (event) => {
     setSelectedEvent(event);
     setShowModal(true);
   };
 
+  // Render an event in the sidebar
   const renderNotesEvent = (event) => {
     const endDate = event.end.toLocaleString("default", { Date: "long" });
     const subjectStyle = getSubjectStyle(event.subject);
@@ -221,11 +239,10 @@ export const NotesBar = ({ events, user }) => {
     );
   };
 
+  // Sort events by date and filter by subject 
   const sortedEvents = events
     .filter((event) => event.subject === "Notes" && event.createdByUserId === user.uid)
     .sort((a, b) => new Date(a.end) - new Date(b.end));
-
-  /* console.log("Filtered Notes events:", sortedEvents); */
 
   return (
     <div>

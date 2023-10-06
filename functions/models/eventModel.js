@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import connectDb from "../config/database.js";
 
+// Create a new Sequelize model for the Event table in the database
 const db = await connectDb();
 const createEventModel = (db) => {
   const Event = db.define("event", {
@@ -30,6 +31,7 @@ const createEventModel = (db) => {
     },
     createdByUserId: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     backgroundColor: {
       type: Sequelize.STRING,

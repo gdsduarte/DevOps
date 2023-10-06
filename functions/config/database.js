@@ -1,22 +1,24 @@
 import { Sequelize } from "sequelize";
 
-/* Server */
+// Change the server and localhost variables to your database credentials
+// Server
 const server = {
-  database: "devops_calendar",
-  username: "root",
-  password: "1234mudar",
-  host: "35.193.37.252",
+  database: "b2u6xsmd8kazhq1gjiic",
+  username: "ugnknltlu8pwmf4a",
+  password: "TywxSF4EvbflrkS8U7P6",
+  host: "b2u6xsmd8kazhq1gjiic-mysql.services.clever-cloud.com",
   dialect: "mysql",
+  uri: "mysql://ugnknltlu8pwmf4a:TywxSF4EvbflrkS8U7P6@b2u6xsmd8kazhq1gjiic-mysql.services.clever-cloud.com:3306/b2u6xsmd8kazhq1gjiic",
   define: {
     timestamps: false,
   },
 };
 
-/* Localhost */
+// Localhost
 const localhost = {
-  database: "devops_calendar", 
+  database: "devops_calendar",
   username: "root", // Change this to your username
-  password: "gds437", // Change this to your password
+  password: "1234", // Change this to your password
   host: "localhost",
   dialect: "mysql",
   define: {
@@ -24,10 +26,14 @@ const localhost = {
   },
 };
 
+// Connect to the database
 const db1 = new Sequelize(server);
 const db2 = new Sequelize(localhost);
 
+// Try to connect to the server, if it fails, try to connect to localhost
 const connectDb = async () => {
+
+  // Try to connect to the server
   try {
     await db1.authenticate();
     console.log("Connected to server successfully");
@@ -36,6 +42,7 @@ const connectDb = async () => {
   } catch (error) {
     console.error("Unable to connect to server:", error.message);
 
+    // If the server connection fails, try to connect to localhost
     try {
       await db2.authenticate();
       console.log("Connected to localhost successfully");

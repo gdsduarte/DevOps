@@ -7,23 +7,24 @@ import { fetchEvents } from "../services/eventService";
 import EventModal from "./EventModal";
 import { getSubjectStyle } from "../components/CalendarUtils";
 
+// Calendar component
 const Calendar = ({ onEventsChange, user }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendarRef, setCalendarRef] = useState(null);
   const [events, setEvents] = useState([]);
 
+  // Load events from the database when the user logs in
   useEffect(() => {
-    /* console.log('useEffect triggered', user); */
     const loadEvents = async () => {
       const fetchedEvents = await fetchEvents();
-      /* console.log("fetchedEvents:", fetchedEvents); */
   
+      // Filter out the notes created by other users 
       const filteredEvents = fetchedEvents.filter((event) => {
         return event.subject !== "Notes" || (user && event.createdByUserId === user.uid);
       });
-      /* console.log("filteredEvents:", filteredEvents); */
   
+      // Format the events for the calendar component 
       const updatedEvents = filteredEvents.map((event) => {
         const eventStyle = getSubjectStyle(event.subject);
         return {
@@ -35,21 +36,23 @@ const Calendar = ({ onEventsChange, user }) => {
           end: new Date(event.end),
         };
       });
-      /* console.log("updatedEvents:", updatedEvents); */
   
       setEvents(updatedEvents);
     };
   
+    // Load events only if the user is logged in
     if (user) {
       loadEvents();
     }
   }, [user]);
   
+  // Count the number of overlapping events for a given date range 
   const countOverlappingEvents = (selectedRangeStart, selectedRangeEnd) => {
     const calendarApi = calendarRef.getApi();
     const events = calendarApi.getEvents();
     let overlappingEvents = 0;
   
+    // Check if the selected date range overlaps with any existing events
     events.forEach((event) => {
       if (
         (selectedRangeStart >= event.start && selectedRangeStart < event.end) ||
@@ -63,11 +66,13 @@ const Calendar = ({ onEventsChange, user }) => {
     return overlappingEvents;
   };
   
+  // Handle the click date event for the calendar component 
   const handleDateClick = (arg) => {
     const selectedRangeStart = new Date(arg.date);
     const selectedRangeEnd = new Date(arg.date);
     selectedRangeEnd.setDate(selectedRangeEnd.getDate() + 1);
   
+    // Check if the selected date range overlaps with any existing events
     if (countOverlappingEvents(selectedRangeStart, selectedRangeEnd) >= 2) {
       alert("You cannot have more than 2 events on the same day.");
       return;
@@ -77,6 +82,7 @@ const Calendar = ({ onEventsChange, user }) => {
     setIsModalOpen(true);
   };
   
+  // Handle the click event for the calendar component 
   const handleEventClick = (info) => {
     setSelectedEvent({
       id: info.event.id,
@@ -89,6 +95,7 @@ const Calendar = ({ onEventsChange, user }) => {
     setIsModalOpen(true);
   };
 
+  // Handle the add event event for the calendar component
   const handleEventAdd = (newEvent) => {
     const updatedEvent = {
       ...newEvent,
@@ -97,10 +104,12 @@ const Calendar = ({ onEventsChange, user }) => {
       textColor: getSubjectStyle(newEvent.subject).color,
     };
   
+    // Add the event to the calendar component 
     calendarRef.getApi().addEvent(updatedEvent);
     onEventsChange([...events, updatedEvent]);
   };
   
+  // Handle the update event event for the calendar component 
   const handleEventUpdate = (updatedEvent) => {
     const eventApi = calendarRef.getApi().getEventById(updatedEvent.id);
     if (eventApi) {
@@ -110,21 +119,27 @@ const Calendar = ({ onEventsChange, user }) => {
       eventApi.setExtendedProp('description', updatedEvent.description);
       eventApi.setProp('backgroundColor', getSubjectStyle(updatedEvent.subject).backgroundColor);
     }
+
+    // Update the event in the events list
     const updatedEventsList = events.map((event) => {
       return event.id === updatedEvent.id ? updatedEvent : event;
     });
     onEventsChange(updatedEventsList);
   };
 
+  // Handle the delete event event for the calendar component
   const handleEventDelete = (deletedEventId) => {
     const eventApi = calendarRef.getApi().getEventById(deletedEventId);
     if (eventApi) {
       eventApi.remove();
     }
+
+    // Remove the event from the events list
     const remainingEvents = events.filter((event) => event.id !== deletedEventId);
     onEventsChange(remainingEvents);
   };
 
+  // Render the event content for the calendar component 
   const renderEventContent = (eventInfo) => {
     return (
       <div>

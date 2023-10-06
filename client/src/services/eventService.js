@@ -1,9 +1,9 @@
 import http from "./http-common";
 
+// Get all events
 const fetchEvents = async () => {
   try {
     const response = await http.get("/events");
-    /* console.log("Fetched events:", response.data); */
     return response.data;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -11,6 +11,7 @@ const fetchEvents = async () => {
   }
 };
 
+// Create a new event
 const createEvent = async (event) => {
   try {
     const response = await http.post("/events", event);
@@ -21,6 +22,7 @@ const createEvent = async (event) => {
   }
 };
 
+// Update an event
 const updateEvent = async (id, event) => {
   try {
     const response = await http.put(`/events/${id}`, event);
@@ -31,6 +33,7 @@ const updateEvent = async (id, event) => {
   }
 };
 
+// Delete an event
 const deleteEvent = async (id) => {
   try {
     const response = await http.delete(`/events/${id}`);

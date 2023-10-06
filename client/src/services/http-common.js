@@ -1,21 +1,11 @@
 import axios from "axios";
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-
+// Create an axios instance for all requests made from this instance
 const http = axios.create({
-  baseURL: isDevelopment ? "http://localhost:8080" : "http://35.242.175.209:8080",
+  baseURL: "https://us-central1-devops-dorset.cloudfunctions.net/api",
   headers: {
     "Content-type": "application/json",
   },
 });
-
-export const fetchServerStatus = async () => {
-  try {
-    const response = await http.get("/api/server-status");
-    console.log(response.data.status);
-  } catch (error) {
-    console.error("Error fetching server status:", error);
-  }
-};
 
 export default http;

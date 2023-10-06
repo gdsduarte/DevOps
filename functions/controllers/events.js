@@ -1,5 +1,6 @@
 import Event from "../models/eventModel.js";
- 
+
+// Get all events
 export const getAllEvents = async (req, res) => {
     try {
         const events = await Event.findAll();
@@ -8,7 +9,8 @@ export const getAllEvents = async (req, res) => {
         res.json({ message: error.message });
     }  
 }
- 
+
+// Get a single event by id
 export const getEventById = async (req, res) => {
     try {
         const events = await Event.findAll({
@@ -21,10 +23,10 @@ export const getEventById = async (req, res) => {
         res.json({ message: error.message });
     }  
 }
- 
+
+// Create a new event
 export const createEvent = async (req, res) => {
     try {
-        console.log(req.body); // Log the request body
         await Event.create(req.body);
         res.json({
             "message": "Events Created"
@@ -33,7 +35,8 @@ export const createEvent = async (req, res) => {
         res.json({ message: error.message });
     }
 }
- 
+
+// Update an event
 export const updateEvent = async (req, res) => {
     try {
         await Event.update(req.body, {
@@ -48,7 +51,8 @@ export const updateEvent = async (req, res) => {
         res.json({ message: error.message });
     }  
 }
- 
+
+// Delete an event
 export const deleteEvent = async (req, res) => {
     try {
         await Event.destroy({

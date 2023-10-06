@@ -2,18 +2,22 @@ import { signInWithEmailAndPassword, registerWithEmailAndPassword } from "../ser
 import React, { useState } from "react";
 import "../assets/css/login.css";
 
+// Login page component
 function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  // Handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // Check if the email address is valid
     const allowedDomains = ["@student.dorset-college.ie", "@faculty.dorset-college.ie", "@dorset.ie"];
     const emailDomain = email.substring(email.lastIndexOf("@"));
   
+    // If the email address is not valid, display an alert and return
     if (!allowedDomains.includes(emailDomain)) {
       alert("Please use an email address with an allowed domain: \n\n@student.dorset-college.ie \n@faculty.dorset-college.ie \n@dorset.ie");
       return;

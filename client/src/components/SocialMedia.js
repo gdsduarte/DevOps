@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Render the social media icons
 const SocialMediaIcons = () => {
   return (
     <div className='social'>

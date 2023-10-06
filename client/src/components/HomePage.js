@@ -6,6 +6,7 @@ import { Subjects, EventBar, DeadlineBar, NotesBar } from "./CalendarUtils";
 import { fetchEvents } from "../services/eventService";
 import React, { useState, useEffect } from "react";
 
+// Header component
 function Header() {
   return (
     <header className="header">
@@ -24,6 +25,7 @@ function Header() {
   );
 }
 
+// Main component
 function Main({ user }) {
   const today = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -31,6 +33,7 @@ function Main({ user }) {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState("All");
 
+  // Fetch events from the database and update the current events state
   useEffect(() => {
     const loadEvents = async () => {
       const fetchedEvents = await fetchEvents();
@@ -105,6 +108,7 @@ function Main({ user }) {
   );
 }
 
+// Footer component
 function Footer() {
   return (
     <footer>
@@ -126,6 +130,7 @@ function Footer() {
   );
 }
 
+// Home component (parent of Header, Main, and Footer) 
 function Home({ user }) {
   return (
     <div>

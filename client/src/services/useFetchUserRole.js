@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../services/firebase';
 
+// Fetch the user's role from the firestore database
 const useFetchUserRole = (user) => {
   const [role, setRole] = useState(null);
 
@@ -12,7 +13,6 @@ const useFetchUserRole = (user) => {
         if (snapshot.exists()) {
           const data = snapshot.data();
           const fetchedRole = data.role;
-          /* console.log('Fetched role:', fetchedRole); */
           setRole(fetchedRole);
         }
       };
